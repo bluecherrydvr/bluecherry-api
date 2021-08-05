@@ -14,19 +14,17 @@ const AvailableSources = sequelize.define('AvailableSources', {
   },
   card_id: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   video_type: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 }, { tableName });
 
 // eslint-disable-next-line
 AvailableSources.prototype.toJSON = function () {
-  const values = Object.assign({}, this.get());
-
-  delete values.password;
-
-  return values;
+  return Object.assign({}, this.get());
 };
 
 module.exports = AvailableSources;
