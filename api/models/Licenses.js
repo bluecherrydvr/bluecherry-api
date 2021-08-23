@@ -18,7 +18,9 @@ const Licenses = sequelize.define('Licenses', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 Licenses.prototype.toJSON = function () {

@@ -53,7 +53,9 @@ const EventsCam = sequelize.define('EventsCam', {
   details: {
     type: Sequelize.TEXT,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 EventsCam.prototype.toJSON = function () {

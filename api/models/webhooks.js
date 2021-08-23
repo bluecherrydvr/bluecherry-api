@@ -28,7 +28,9 @@ const webhooks = sequelize.define('webhooks', {
     defaultValue: Sequelize.NOW,
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 webhooks.prototype.toJSON = function () {

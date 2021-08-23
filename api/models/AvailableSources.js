@@ -20,7 +20,9 @@ const AvailableSources = sequelize.define('AvailableSources', {
     type: Sequelize.STRING,
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 AvailableSources.prototype.toJSON = function () {

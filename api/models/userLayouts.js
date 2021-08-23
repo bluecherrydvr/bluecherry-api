@@ -14,7 +14,9 @@ const userLayouts = sequelize.define('userLayouts', {
   layout: {
     type: Sequelize.STRING(255),
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 userLayouts.prototype.toJSON = function () {

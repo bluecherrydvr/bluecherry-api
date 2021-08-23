@@ -104,7 +104,9 @@ const ipPtzCommandPresets = sequelize.define('ipPtzCommandPresets', {
     type: Sequelize.STRING(10),
     defaultValue: 'http',
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 ipPtzCommandPresets.prototype.toJSON = function () {

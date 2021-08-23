@@ -30,7 +30,9 @@ const Media = sequelize.define('Media', {
     defaultValue: false,
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 Media.prototype.toJSON = function () {

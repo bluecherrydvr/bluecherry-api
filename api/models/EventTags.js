@@ -28,7 +28,9 @@ const EventTags = sequelize.define('EventTags', {
       key: 'id',
     },
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 EventTags.prototype.toJSON = function () {

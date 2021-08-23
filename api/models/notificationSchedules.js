@@ -43,7 +43,9 @@ const notificationSchedules = sequelize.define('notificationSchedules', {
     allowNull: false,
     defaultValue: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 notificationSchedules.prototype.toJSON = function () {

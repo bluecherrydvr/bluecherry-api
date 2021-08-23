@@ -21,7 +21,9 @@ const PTZPresets = sequelize.define('PTZPresets', {
   preset_name: {
     type: Sequelize.STRING,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 PTZPresets.prototype.toJSON = function () {

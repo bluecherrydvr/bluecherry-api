@@ -25,14 +25,14 @@ const UserController = () => {
   };
 
   const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (email && password) {
+    if (username && password) {
       try {
         const user = await User
           .findOne({
             where: {
-              email,
+              username,
             },
           });
 
@@ -40,7 +40,7 @@ const UserController = () => {
           return res.status(400).json({ msg: 'Bad Request: User not found' });
         }
 
-        if (bcryptService().comparePassword(password, user.password)) {
+        if (bcryptService().comparePassword(`${password}${user.salt}`, user.password)) {
           const token = authService().issue({ id: user.id });
 
           return res.status(200).json({ token, user });

@@ -35,34 +35,36 @@ const User = sequelize.define('Users', {
   notes: {
     type: Sequelize.STRING(2000),
   },
-  asses_setup: {
+  access_setup: {
     type: Sequelize.BOOLEAN,
   },
-  asses_remote: {
+  access_remote: {
     type: Sequelize.BOOLEAN,
   },
-  asses_web: {
+  access_web: {
     type: Sequelize.BOOLEAN,
   },
-  asses_backup: {
+  access_backup: {
     type: Sequelize.BOOLEAN,
   },
-  asses_relay: {
+  access_relay: {
     type: Sequelize.BOOLEAN,
   },
-  asses_device_list: {
+  access_device_list: {
     type: Sequelize.STRING,
   },
-  asses_ptz_list: {
+  access_ptz_list: {
     type: Sequelize.STRING,
   },
-  asses_schedule: {
+  access_schedule: {
     type: Sequelize.STRING(128),
   },
   change_password: {
     type: Sequelize.BOOLEAN,
   },
-}, { hooks, tableName });
+}, {
+  hooks, tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 User.prototype.toJSON = function () {

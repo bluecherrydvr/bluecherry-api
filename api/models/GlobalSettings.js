@@ -13,7 +13,9 @@ const GlobalSettings = sequelize.define('GlobalSettings', {
   value: {
     type: Sequelize.STRING,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 GlobalSettings.prototype.toJSON = function () {

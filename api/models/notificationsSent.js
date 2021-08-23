@@ -13,7 +13,9 @@ const notificationsSent = sequelize.define('notificationsSent', {
     type: Sequelize.INTEGER,
     defaultValue: 0,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 notificationsSent.prototype.toJSON = function () {

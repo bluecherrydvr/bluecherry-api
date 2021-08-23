@@ -22,7 +22,9 @@ const OnvifEvents = sequelize.define('OnvifEvents', {
   onvif_topic: {
     type: Sequelize.STRING,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 OnvifEvents.prototype.toJSON = function () {

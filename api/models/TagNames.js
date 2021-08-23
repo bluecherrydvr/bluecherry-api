@@ -8,7 +8,9 @@ const TagNames = sequelize.define('TagNames', {
   name: {
     type: Sequelize.STRING,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 TagNames.prototype.toJSON = function () {

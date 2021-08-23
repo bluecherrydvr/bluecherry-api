@@ -23,7 +23,9 @@ const Storage = sequelize.define('Storage', {
     type: Sequelize.DECIMAL(5, 2),
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 Storage.prototype.toJSON = function () {

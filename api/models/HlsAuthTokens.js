@@ -15,7 +15,9 @@ const HlsAuthTokens = sequelize.define('HlsAuthTokens', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 HlsAuthTokens.prototype.toJSON = function () {

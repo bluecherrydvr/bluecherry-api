@@ -18,7 +18,9 @@ const RtspAuthTokens = sequelize.define('RtspAuthTokens', {
     defaultValue: Sequelize.NOW,
     allowNull: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 RtspAuthTokens.prototype.toJSON = function () {

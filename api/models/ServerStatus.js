@@ -8,6 +8,7 @@ const ServerStatus = sequelize.define('ServerStatus', {
   pid: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    primaryKey: true,
   },
   timestamp: {
     type: Sequelize.INTEGER,
@@ -16,7 +17,9 @@ const ServerStatus = sequelize.define('ServerStatus', {
   message: {
     type: Sequelize.TEXT,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 ServerStatus.prototype.toJSON = function () {

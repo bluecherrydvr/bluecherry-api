@@ -28,7 +28,9 @@ const EventComments = sequelize.define('EventComments', {
   comment: {
     type: Sequelize.STRING,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 EventComments.prototype.toJSON = function () {

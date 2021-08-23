@@ -17,7 +17,9 @@ const ActiveUsers = sequelize.define('ActiveUsers', {
   kick: {
     type: Sequelize.BOOLEAN,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 ActiveUsers.prototype.toJSON = function () {

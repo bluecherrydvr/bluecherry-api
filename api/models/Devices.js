@@ -187,7 +187,9 @@ const Devices = sequelize.define('Devices', {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 Devices.prototype.toJSON = function () {

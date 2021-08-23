@@ -33,7 +33,9 @@ const EventsSystem = sequelize.define('EventsSystem', {
   details: {
     type: Sequelize.TEXT,
   },
-}, { tableName });
+}, {
+  tableName, timestamps: false, createdAt: false, updatedAt: false,
+});
 
 // eslint-disable-next-line
 EventsSystem.prototype.toJSON = function () {
