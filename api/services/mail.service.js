@@ -3,6 +3,7 @@ const Utils = require('../services/util.service');
 
 const MailService = () => {
   const utils = Utils();
+  // eslint-disable-next-line consistent-return
   const sendMail = async (email, emailBody, isTestMail) => new Promise(async (resolve, reject) => {
     try {
       const globalSetting = await utils.getAllGlobalSetting();
@@ -54,8 +55,6 @@ const MailService = () => {
           return resolve(info);
         });
       }
-
-      // return reject();
     } catch (e) {
       return reject(e);
     }

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const GlobalSettings = require('../models/GlobalSettings');
 
 const utils = () => {

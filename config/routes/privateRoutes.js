@@ -6,6 +6,9 @@ const privateRoutes = {
   'GET /general-settings': 'SettingController.getAllSettings',
   'POST /general-settings': 'SettingController.saveAllSettings',
   'POST /test-mail': 'SettingController.sendTestEmail',
+  'GET /storage': 'StorageController.getData',
+  'POST /storage': 'StorageController.postData',
+  'GET /storagecheck': 'StorageController.storageCheck',
 };
 
 module.exports = privateRoutes;
