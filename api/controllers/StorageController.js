@@ -29,9 +29,6 @@ const StorageController = () => {
 
   const getFreeSpace = async (path) => {
     try {
-      console.log({
-        readdirSync: fs.readdirSync(path)
-      })
       return disk.checkSync(path);
     } catch (err) {
       console.error(err)

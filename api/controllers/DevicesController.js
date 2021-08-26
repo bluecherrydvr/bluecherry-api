@@ -82,11 +82,40 @@ const DevicesController = () => {
     }
   };
 
+  const getCards = async (req, res) => {
+    try{
+      const query = `SELECT card_id FROM AvailableSources GROUP BY card_id`;
+      const AvailableSources = await sequelize.query(query, { type: QueryTypes.SELECT });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: 'Internal server error' });
+    }
+  }
+
+  const getIpCameras = async (req, res) => {
+    try{
+
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: 'Internal server error' });
+    }
+  }
+
+  const getDatas = async (req, res) => {
+    try{
+
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: 'Internal server error' });
+    }
+  }
+
 
   return {
     getAll,
     getCameras,
     setPlayBack,
+    getDatas
   };
 };
 

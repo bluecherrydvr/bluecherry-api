@@ -1,6 +1,7 @@
 /**
  * third party libraries
  */
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');

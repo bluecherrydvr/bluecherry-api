@@ -538,3 +538,17 @@ Optional:
 - `npm run prepush` - a hook wich runs before pushing to a repository, runs `npm test` and `npm run dropDB`
 - `pretest` - runs linting before `npm test`
 - `test-ci` - only runs tests, nothing in pretest, nothing in posttest, for better use with ci tools
+
+
+
+##TODO remaining
+- Delete user API 
+- Download and streaming mp4 files
+- Add existing logic to login API's and Active users API's 
+- add new column in activeUsers table
+  - ALTER TABLE `ActiveUsers` ADD `token` TEXT NOT NULL AFTER `kick`
+  - ALTER TABLE `ActiveUsers` CHANGE `time` `time` TEXT NULL DEFAULT NULL;
+  - ALTER TABLE `ActiveUsers` ADD `userId` INT NOT NULL AFTER `id`;
+  - ALTER TABLE `ActiveUsers` ADD PRIMARY KEY( `id`);
+  - ALTER TABLE `ActiveUsers` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
+- API for Devices and Card service and Camera service

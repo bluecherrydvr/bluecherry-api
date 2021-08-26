@@ -7,15 +7,22 @@ const tableName = 'ActiveUsers';
 const ActiveUsers = sequelize.define('ActiveUsers', {
   ip: {
     type: Sequelize.STRING,
+    primaryKey: true,
   },
   from_client: {
     type: Sequelize.BOOLEAN,
+  },
+  userId: {
+    type: Sequelize.STRING,
   },
   time: {
     type: Sequelize.STRING,
   },
   kick: {
     type: Sequelize.BOOLEAN,
+  },
+  token: {
+    type: Sequelize.STRING,
   },
 }, {
   tableName, timestamps: false, createdAt: false, updatedAt: false,
