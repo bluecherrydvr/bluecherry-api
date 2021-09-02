@@ -552,3 +552,5 @@ Optional:
   - ALTER TABLE `ActiveUsers` ADD PRIMARY KEY( `id`);
   - ALTER TABLE `ActiveUsers` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;
 - API for Devices and Card service and Camera service
+- API endpoint for webhook test 
+- 

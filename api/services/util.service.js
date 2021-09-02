@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const fs = require('fs');
 const GlobalSettings = require('../models/GlobalSettings');
 
@@ -115,11 +116,19 @@ const utils = () => {
   //   }
   // };
 
+  const throwError = (code = 500, errorType, errorMessage) => (error) => {
+    if (!error) error = new Error(errorMessage || 'Default Error');
+    error.code = code;
+    error.errorType = errorType;
+    throw error;
+  };
+
   return {
     getGlobalSetting,
     getVaapiOptions,
     getLiveViewVideoOptions,
     getAllGlobalSetting,
+    throwError,
   };
 };
 

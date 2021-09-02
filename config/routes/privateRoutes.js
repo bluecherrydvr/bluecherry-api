@@ -15,6 +15,17 @@ const privateRoutes = {
   'POST /kick-user': 'UserController.kickUser',
   'GET /device-schedule': 'DevicesScheduleController.getData',
   'POST /device-schedule': 'DevicesScheduleController.postData',
+  'GET /notification': 'NotificationController.getData',
+  'GET /notification/:id': 'NotificationController.getDataById',
+  'POST /notification': 'NotificationController.postData',
+  'PUT /notification/:id': 'NotificationController.editData',
+  'PUT /notification/:id/toggle-status': 'NotificationController.toggleStatus',
+  'DELETE /notification/:id': 'NotificationController.removeDataById',
+  'GET /webhooks': 'WebhookController.getData',
+  'GET /webhooks/:id': 'WebhookController.getDataById',
+  'POST /webhooks': 'WebhookController.postData',
+  'PUT /webhooks/:id': 'WebhookController.editData',
+  'DELETE /webhooks/:id': 'WebhookController.removeDataById',
 };
 
 module.exports = privateRoutes;
