@@ -10,8 +10,7 @@ const DevicesController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -25,8 +24,7 @@ const DevicesController = () => {
       });
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -77,8 +75,7 @@ const DevicesController = () => {
       });
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -87,8 +84,7 @@ const DevicesController = () => {
       const query = `SELECT card_id FROM AvailableSources GROUP BY card_id`;
       const AvailableSources = await sequelize.query(query, { type: QueryTypes.SELECT });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 
@@ -96,8 +92,7 @@ const DevicesController = () => {
     try{
 
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 
@@ -105,8 +100,7 @@ const DevicesController = () => {
     try{
 
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 

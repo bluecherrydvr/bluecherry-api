@@ -69,8 +69,7 @@ const StorageController = () => {
 
       return res.status(200).json({ storageData });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -152,8 +151,8 @@ const StorageController = () => {
 
 
       return res.status(200).json({ msg: "Storage updated" });
-    } catch (e) {
-      return res.status(500).json({ msg: 'Internal server error' });
+    } catch (err) {
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 
@@ -166,8 +165,8 @@ const StorageController = () => {
       status = dir_status[0] === 'F' ? 500 : status
       status = dir_status[0] === 'INFO' ? 400 : status
       return res.status(status).json({ msg: dir_status[1] });
-    } catch (e) {
-      return res.status(500).json({ msg: 'Internal server error' });
+    } catch (err) {
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 

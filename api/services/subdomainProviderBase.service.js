@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,max-len */
 const { curly } = require('node-libcurl');
 const GlobalSettings = require('../models/GlobalSettings');
 const Licenses = require('../models/Licenses');
@@ -15,13 +15,13 @@ const subdomainproviderbase = () => {
 
   const getSubdomainApiBaseUrl = async () => {
     try {
-      if (!subdomainApiBaseUrlCache) {
-        return subdomainApiBaseUrlCache;
+      if (subdomainApiBaseUrlCache) {
+        return subdomainApiBaseUrlCache && subdomainApiBaseUrlCache.value ? subdomainApiBaseUrlCache.value : null;
       }
 
       const data = await GlobalSettings.findOne({ where: { parameter: API_BASE_URL_NAME } });
       subdomainApiBaseUrlCache = data.toJSON();
-      return subdomainApiBaseUrlCache;
+      return subdomainApiBaseUrlCache && subdomainApiBaseUrlCache.value ? subdomainApiBaseUrlCache.value : null;
     } catch (e) {
       return null;
     }
@@ -30,13 +30,13 @@ const subdomainproviderbase = () => {
   const getLicenseKey = async () => {
     try {
       let licenses = await Licenses.findOne({ where: {} });
-      licenses = licenses.toJSON();
+      licenses = licenses ? licenses.toJSON() : licenses;
 
-      if (!licenses || !licenses.licenses) {
+      if (!licenses || !licenses.license) {
         return utils.throwError(500, "Any license isn't activated  in bluecherry system");
       }
 
-      return licenses.licenses;
+      return licenses.license;
     } catch (e) {
       return utils.throwError(500, "Any license isn't activated  in bluecherry system");
     }
@@ -44,7 +44,8 @@ const subdomainproviderbase = () => {
 
   const postToApi = async (path, body = {}, httpHeader = []) => {
     try {
-      const baseUrl = getSubdomainApiBaseUrl();
+      const baseUrl = await getSubdomainApiBaseUrl();
+
       const { data } = await curly.post(`${baseUrl}${path}`, {
         postFields: JSON.stringify(body),
         httpHeader: [
@@ -82,14 +83,14 @@ const subdomainproviderbase = () => {
         licenseKey = await getLicenseKey();
       } catch (e) {
         if (tokenOptional) {
-          return postToApi(path, body, headers);
+          return await postToApi(path, body, headers);
         }
         return utils.throwError(500, e);
       }
 
-      return postToApi(path, body, [`Authorization: Bearer  ${licenseKey}`, ...headers]);
+      return await postToApi(path, body, [`Authorization: Bearer  ${licenseKey}`, ...headers]);
     } catch (e) {
-      return utils.throwError(500, `${licenseKey}'s id not found in cryptlex`);
+      return utils.throwError(500, e.message, licenseKey ? `${licenseKey} id not found in cryptlex` : e.message);
     }
   };
 
@@ -104,13 +105,30 @@ const subdomainproviderbase = () => {
       });
       return data;
     } catch (e) {
+      console.log({ e });
+      return utils.throwError(500, 'API request is failed.');
+    }
+  };
+
+  const executeApiDeleteRequest = async (url, httpHeader = [], customRequest = null) => {
+    try {
+      const { data } = await curly.delete(url, {
+        httpHeader: [
+          'Content-Type: application/json',
+          ...httpHeader,
+        ],
+        customRequest,
+      });
+      return data;
+    } catch (e) {
+      console.log({ e });
       return utils.throwError(500, 'API request is failed.');
     }
   };
 
   const getFromApi = async (path, query = {}, headers = [], customRequest = null) => {
     try {
-      const baseUrl = getSubdomainApiBaseUrl();
+      const baseUrl = await getSubdomainApiBaseUrl();
 
       if (!query) {
         const params = new URLSearchParams(query);
@@ -122,13 +140,30 @@ const subdomainproviderbase = () => {
       return utils.throwError(500, 'API request is failed.');
     }
   };
+  const deleteFromApi = async (path, query = {}, headers = [], customRequest = null) => {
+    try {
+      const baseUrl = await getSubdomainApiBaseUrl();
+
+      if (!query) {
+        const params = new URLSearchParams(query);
+        const str = params.toString();
+        path += `?${str}`;
+      }
+      return executeApiDeleteRequest(`${baseUrl}${path}`, headers, customRequest);
+    } catch (e) {
+      return utils.throwError(500, 'API request is failed.');
+    }
+  };
 
   // eslint-disable-next-line max-len
   const getFromApiWithToken = async (path, query = {}, headers = [], tokenOptional = false, customRequest = null) => {
     let licenseId;
     try {
       try {
-        licenseId = getLicenseId();
+        licenseId = await getLicenseId();
+        console.log({
+          licenseId,
+        });
       } catch (e) {
         if (tokenOptional) {
           return getFromApi(path, query, headers);
@@ -141,7 +176,25 @@ const subdomainproviderbase = () => {
     }
   };
 
-  const getServerPublicIp = async (tryIpv6) => executeApiGetRequest(`https://${tryIpv6 ? 'api64' : 'api'}ipify.org/?format=json`);
+  // eslint-disable-next-line max-len
+  const deleteFromApiWithToken = async (path, query = {}, headers = [], tokenOptional = false, customRequest = null) => {
+    let licenseId;
+    try {
+      try {
+        licenseId = await getLicenseId();
+      } catch (e) {
+        if (tokenOptional) {
+          return deleteFromApi(path, query, headers);
+        }
+        return utils.throwError(500, e);
+      }
+      return deleteFromApi(path, query, [`Authorization: Bearer ${licenseId}`, ...headers], customRequest);
+    } catch (e) {
+      return utils.throwError(500, 'API request is failed.');
+    }
+  };
+
+  const getServerPublicIp = async (tryIpv6) => executeApiGetRequest(`https://${tryIpv6 ? 'api64' : 'api'}.ipify.org/?format=json`);
 
   const getGlobalSettingsValue = async (parameter) => {
     try {
@@ -185,6 +238,9 @@ const subdomainproviderbase = () => {
     getServerPublicIp,
     getGlobalSettingsValue,
     setGlobalSettingsValue,
+    executeApiDeleteRequest,
+    deleteFromApi,
+    deleteFromApiWithToken,
   };
 };
 

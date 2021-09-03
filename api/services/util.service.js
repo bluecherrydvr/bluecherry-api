@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const fs = require('fs');
 const GlobalSettings = require('../models/GlobalSettings');
+const { exec } = require('node-exec-promise');
 
 const utils = () => {
   const getGlobalSetting = async (settingName) => {
@@ -116,12 +117,25 @@ const utils = () => {
   //   }
   // };
 
-  const throwError = (code = 500, errorType, errorMessage) => (error) => {
-    if (!error) error = new Error(errorMessage || 'Default Error');
+  const throwError = (code = 500, errorType, errorMessage) => {
+    const error = new Error(errorMessage || errorType);
     error.code = code;
     error.errorType = errorType;
     throw error;
   };
+
+  const execPromise = (command) => new Promise((resolve, reject) => {
+    try {
+      return exec(command).then((out) => {
+        resolve(out.stdout);
+      }, (err) => {
+        console.error(err);
+        return reject(err);
+      });
+    } catch (err) {
+      return reject(err);
+    }
+  });
 
   return {
     getGlobalSetting,
@@ -129,6 +143,7 @@ const utils = () => {
     getLiveViewVideoOptions,
     getAllGlobalSetting,
     throwError,
+    execPromise,
   };
 };
 

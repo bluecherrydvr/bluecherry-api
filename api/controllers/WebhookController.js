@@ -19,8 +19,7 @@ const WebhookController = () => {
 
       return res.status(200).json({ devices, webhooks, events });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -53,8 +52,7 @@ const WebhookController = () => {
 
       return res.status(200).json({ webhook });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -76,8 +74,7 @@ const WebhookController = () => {
 
       return res.status(200).json({ data: schedule });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -110,8 +107,7 @@ const WebhookController = () => {
 
       return res.status(200).json({ data: webhook });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -127,8 +123,7 @@ const WebhookController = () => {
 
       return res.status(200).json({ msg: 'Record has been deleted successfully', data: webhook });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 

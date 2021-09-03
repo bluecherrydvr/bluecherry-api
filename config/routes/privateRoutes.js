@@ -26,6 +26,10 @@ const privateRoutes = {
   'POST /webhooks': 'WebhookController.postData',
   'PUT /webhooks/:id': 'WebhookController.editData',
   'DELETE /webhooks/:id': 'WebhookController.removeDataById',
+  'GET /subdomain-provider': 'SubdomainProviderController.getData',
+  'GET /subdomain-provider-query': 'SubdomainProviderController.querySubdomain',
+  'GET /subdomain-provider-get-ip': 'SubdomainProviderController.getIp',
+  'DELETE /subdomain-provider': 'SubdomainProviderController.removeProvider',
 };
 
 module.exports = privateRoutes;

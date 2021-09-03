@@ -1,6 +1,4 @@
 /* eslint-disable */
-const Devices = require('../models/Devices');
-const Webhooks = require('../models/webhooks');
 const Utils = require('../services/util.service');
 const subdomainProviderBase = require('../services/subdomainProviderBase.service');
 
@@ -38,7 +36,7 @@ const SubdomainProviderController = () => {
         return res.status(200).json({ data });
       }
 
-      if (!actualConfig) {
+      if (actualConfig) {
         data.actualSubdomain = actualConfig.subdomain;
 
         for (const record of actualConfig.records) {
@@ -51,94 +49,143 @@ const SubdomainProviderController = () => {
 
       return res.status(200).json({ data });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
-    }
-  };
-
-  const validateData = ({label, url, events, status, cameras}, t) => {
-    if(!label){
-      return t('Label is not defined')
-    }
-    if (!url){
-      return t('URL is not defined')
-    }
-    if (!events || (events && events.length <= 0)){
-      return t('Events is not defined')
-    }
-    if (!status){
-      return t('status is not defined')
-    }
-    if (!cameras || (cameras && cameras.length <= 0)){
-      return t('cameras is not defined')
-    }
-    return null;
-  }
-
-  const getDataById = async (req, res) => {
-    try {
-
-      return res.status(200).json({ webhook: [] });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
   const postData = async (req, res) => {
     try {
-      const error = validateData(req.body, req.t)
 
-      if(error){
-        return res.status(400).json({ msg: error });
+      let status = 0;
+      const {
+        subdomain_name,
+        subdomain_email,
+        server_ip_address_4,
+        server_ip_address_6,
+        update_ip_address_4_auto,
+        update_ip_address_6_auto,
+      } = req.body;
+
+      if (!subdomain_name) {
+        return res.status(500).json({ msg: 'subdomain_name is required' });
+      }
+      if (!subdomain_email) {
+        return res.status(500).json({ msg: 'subdomain_email is required' });
+      }
+      if (!server_ip_address_4) {
+        return res.status(500).json({ msg: 'server_ip_address_4 is required' });
+      }
+      if (!server_ip_address_6) {
+        return res.status(500).json({ msg: 'server_ip_address_6 is required' });
       }
 
-      return res.status(200).json({ });
+      await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV4',
+          !update_ip_address_4_auto ? 0 : 1);
+
+      await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV6',
+          !update_ip_address_6_auto ? 0 : 1);
+
+      try {
+        let result = await subdomainProviderBase.postToApiWithToken('/assign-ip-address', {
+          'subdomain': subdomain_name,
+          'ip_address' : server_ip_address_4,
+          'type': 4
+        });
+
+        if (!result.success) {
+          status = 0;
+          return res.status(200).json({status});
+        }
+
+        await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV4_VALUE', server_ip_address_4);
+
+        if (!server_ip_address_6) {
+          result = await subdomainProviderBase.postToApiWithToken('/assign-ip-address', {
+            'subdomain': subdomain_name,
+            'ip_address': server_ip_address_6,
+            'type': 6
+        });
+
+          if (!result.success) {
+            status = 0;
+            return res.status(200).json({status});
+          }
+
+          await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV6_VALUE', server_ip_address_6);
+        }
+
+      } catch (error) {
+        status = 0;
+        return res.status(200).json({status});
+      }
+
+      // Update subdomain certs
+      let token = await subdomainProviderBase.getLicenseId();
+
+      const returnVar = await utils.execPromise(`sudo -b /usr/share/bluecherry/scripts/update_subdomain_certs.sh ${subdomain_name} ${subdomain_email} ${token}`);
+
+      if (returnVar === 0) {
+        await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_EMAIL_ACCOUNT', subdomain_email);
+        status = 1;
+        return res.status(200).json({status});
+      }
+
+      await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_EMAIL_ACCOUNT', subdomain_email);
+      status = 3;
+
+      return res.status(200).json({status});
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
-  const editData = async (req, res) => {
+  const querySubdomainName = async (name) => await subdomainProviderBase.postToApiWithToken('/check-subdomain-availability', {
+    'subdomain' : name
+  }, []);
+
+  const querySubdomain = async (req, res) => {
+    try{
+      const { name } = req.query;
+      const data = await querySubdomainName(name);
+
+      return res.status(200).json({...data});
+    } catch (e) {
+      return res.status(500).json({ msg: e.message , errorType: e.errorType });
+    }
+  }
+
+  const getIp = async (req, res) => {
+    try{
+      const { ipv6 } = req.query;
+      const data = await subdomainProviderBase.getServerPublicIp(ipv6 === 'true' || ipv6 === 1);
+
+      return res.status(200).json({...data});
+    } catch (e) {
+      return res.status(500).json({ msg: e.message , errorType: e.errorType });
+    }
+  }
+
+  const removeProvider = async (req, res) => {
     try {
-      const id = req.params.id;
-      if(!id){
-        return res.status(404).json({ msg: 'Id is require' });
+      const actualConfig = await subdomainProviderBase.deleteFromApiWithToken('/actual-configuration', {}, [], false, 'DELETE');
+
+      if (actualConfig && actualConfig.success) {
+        await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV4', 0);
+        await subdomainProviderBase.setGlobalSettingsValue('G_SUBDOMAIN_AUTO_UPDATE_IPV6', 0);
       }
 
-      const error = validateData(req.body, req.t)
-
-      if(error){
-        return res.status(400).json({ msg: error });
-      }
-      return res.status(200).json({ });
+      return res.status(200).json({ actualConfig });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
-  };
-
-  const removeDataById = async (req, res) => {
-    try {
-      const id = req.params.id;
-      if(!id){
-        return res.status(404).json({ msg: 'Id is require' });
-      }
-
-      return res.status(200).json({ msg: 'Record has been deleted successfully', data: '' });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
-    }
-  };
+  }
 
   return {
     getData,
-    getDataById,
     postData,
-    editData,
-    removeDataById
+    querySubdomain,
+    getIp,
+    removeProvider
   };
 };
 

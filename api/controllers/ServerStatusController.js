@@ -9,8 +9,7 @@ const ServerStatusController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -44,8 +43,7 @@ const ServerStatusController = () => {
       res.set('Content-Type', 'text/xml');
       return res.send(xmlResponse);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 

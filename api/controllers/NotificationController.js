@@ -15,8 +15,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ devices, users, notificationSchedules });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -42,8 +41,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ notificationSchedules });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -84,8 +82,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ data: schedule });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -107,8 +104,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ data: notificationSchedules });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -144,8 +140,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ data: notificationSchedules });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -161,8 +156,7 @@ const NotificationController = () => {
 
       return res.status(200).json({ msg: 'Record has been deleted successfully', data: notificationSchedules });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 

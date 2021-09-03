@@ -17,8 +17,7 @@ const UserController = () => {
 
         return res.status(200).json({ token, user });
       } catch (err) {
-        console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
+        return res.status(500).json({ msg: 'Internal server error', err });
       }
     }
 
@@ -52,8 +51,7 @@ const UserController = () => {
 
         return res.status(401).json({ msg: 'Unauthorized' });
       } catch (err) {
-        console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
+        return res.status(500).json({ msg: 'Internal server error', err });
       }
     }
 
@@ -78,8 +76,7 @@ const UserController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -91,8 +88,7 @@ const UserController = () => {
       }
       return res.status(404).json({ msg: 'user not found' });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -120,8 +116,7 @@ const UserController = () => {
       }
       return res.status(404).json({ msg: 'user not found' });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -140,8 +135,7 @@ const UserController = () => {
       }
       return res.status(404).json({ msg: 'user not found' });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -165,8 +159,7 @@ const UserController = () => {
       await authService.kick(req.body.token);
       return res.status(200).json({ msg: 'user kicked out' });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 

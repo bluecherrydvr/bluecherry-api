@@ -22,8 +22,7 @@ const SettingController = () => {
 
       return res.status(200).json({ settings, getVaapiOptions, validSecureOptions, getLiveViewVideoOptions });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -79,8 +78,7 @@ const SettingController = () => {
 
       return res.status(200).json({ msg: 'Setting has been updated successfully',  fieldsNotUpdated: fieldsNotUpdated, fieldsUpdatedStatus});
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   };
 
@@ -93,11 +91,7 @@ const SettingController = () => {
 
       return res.status(200).json({ msg: 'Testing mail sent successfully',  data});
     } catch (err) {
-
-      console.log({
-        err
-      });
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
 
