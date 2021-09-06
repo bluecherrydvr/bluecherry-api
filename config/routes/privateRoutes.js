@@ -30,6 +30,10 @@ const privateRoutes = {
   'GET /subdomain-provider-query': 'SubdomainProviderController.querySubdomain',
   'GET /subdomain-provider-get-ip': 'SubdomainProviderController.getIp',
   'DELETE /subdomain-provider': 'SubdomainProviderController.removeProvider',
+  'GET /statistics': 'StatisticsController.getData',
+  'POST /statistics': 'StatisticsController.getStatistics',
+  'GET /logs': 'LogsController.getData',
+  'GET /downloadlogs': 'LogsController.downloadLogs',
 };
 
 module.exports = privateRoutes;
