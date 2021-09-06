@@ -86,7 +86,6 @@ const LogsController = () => {
       });
 
       return res.download(req.t('VAR_TARRED_LOGS_TMP_LOCATION'));
-      // header('Content-Disposition: attachment; filename='.basename(req.t('VAR_TARRED_LOGS_TMP_LOCATION')));
     } catch (err) {
       return res.status(500).json({ msg: 'Internal server error', err });
     }
