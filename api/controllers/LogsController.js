@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
 const Utils = require('../services/util.service');
 const fs = require('fs');
+const constants = require('../../config/constants');
 
 const LogsController = () => {
   const utils = Utils();
-  const VAR_WWW_LOG_PATH = '/var/log/nginx/bluecherry-error.log';
-  const VAR_LOG_PATH = '/var/log/bluecherry.log';
 
   const nl2br = (str, replaceMode, isXhtml) => {
     const breakTag = (isXhtml) ? '<br />' : '<br>';
@@ -42,10 +41,10 @@ const LogsController = () => {
     let logPath = '';
     switch (logType) {
       case 'www':
-        logPath = VAR_WWW_LOG_PATH;
+        logPath = constants.VAR_WWW_LOG_PATH;
         break;
       default:
-        logPath = VAR_LOG_PATH;
+        logPath = constants.VAR_LOG_PATH;
         break;
     }
     let log = [];
@@ -75,9 +74,9 @@ const LogsController = () => {
       // get the computer info/dmesg log
       await utils.execPromise('lshw > /tmp/sysinfo.txt; dmesg > /tmp/dmesg.txt;');
       // tar the logs
-      await utils.execPromise(`tar -cf ${req.t('VAR_TARRED_LOGS_TMP_LOCATION')} ${req.t('VAR_LOG_PATH')} ${req.t('VAR_WWW_LOG_PATH')} /tmp/dmesg.txt /tmp/sysinfo.txt > /dev/null`);
+      await utils.execPromise(`tar -cf ${constants.VAR_TARRED_LOGS_TMP_LOCATION} ${constants.VAR_LOG_PATH} ${constants.VAR_WWW_LOG_PATH} /tmp/dmesg.txt /tmp/sysinfo.txt > /dev/null`);
 
-      const files = fs.readFileSync(req.t('VAR_TARRED_LOGS_TMP_LOCATION'), { encoding: 'base64' });
+      const files = fs.statSync(constants.VAR_TARRED_LOGS_TMP_LOCATION, { encoding: 'base64' });
       // output the tarred files
       res.writeHead(200, {
         'Content-Description': 'File Transfer',
@@ -85,7 +84,7 @@ const LogsController = () => {
         'Content-Length': files.size,
       });
 
-      return res.download(req.t('VAR_TARRED_LOGS_TMP_LOCATION'));
+      return res.download(constants.VAR_TARRED_LOGS_TMP_LOCATION);
     } catch (err) {
       return res.status(500).json({ msg: 'Internal server error', err });
     }

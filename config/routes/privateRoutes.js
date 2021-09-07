@@ -34,6 +34,8 @@ const privateRoutes = {
   'POST /statistics': 'StatisticsController.getStatistics',
   'GET /logs': 'LogsController.getData',
   'GET /downloadlogs': 'LogsController.downloadLogs',
+  'POST /backup': 'DatabaseController.getData',
+  'GET /download-backup': 'DatabaseController.downloadBackup',
 };
 
 module.exports = privateRoutes;
