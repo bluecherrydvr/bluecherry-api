@@ -1,3 +1,16 @@
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, '/tmp');
+  },
+  filename(req, file, cb) {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+    cb(null, `${uniqueSuffix}${file.originalname}`);
+  },
+});
+const upload = multer({ storage });
+
 const privateRoutes = {
   'GET /users': 'UserController.getAll',
   'PUT /users/:id': 'UserController.updateUserById',
@@ -36,6 +49,16 @@ const privateRoutes = {
   'GET /downloadlogs': 'LogsController.downloadLogs',
   'POST /backup': 'DatabaseController.getData',
   'GET /download-backup': 'DatabaseController.downloadBackup',
+  'POST /restore-backup_': 'DatabaseController.restoreBackup',
+  'POST /restore-backup': {
+    path: 'DatabaseController.restoreBackup',
+    middlewares: [
+      upload.single('restoreDataFile'),
+    ],
+  },
+  'POST /confirm-backup': {
+    path: 'DatabaseController.confirmRestore',
+  },
 };
 
 module.exports = privateRoutes;

@@ -70,8 +70,8 @@ const DatabaseController = () => {
             }
           } else {
             const current_time = parseInt((new Date().getTime()/1000))
-            let $backup_info = current_time+'|'+(noevents ? '0' : '1')+'|'+(nodevices ? '0' : '1')+'|'+(nousers ? '0' : '1');
-            await fs.appendFileSync( '/tmp/bcbackupinfo', $backup_info)
+            let backupInfo = current_time+'|'+(noevents ? '0' : '1')+'|'+(nodevices ? '0' : '1')+'|'+(nousers ? '0' : '1');
+            await fs.appendFileSync( '/tmp/bcbackupinfo', backupInfo)
             await utils.execPromise(`tar --directory="/tmp" -czvf ${constants.VAR_MYSQLDUMP_TMP_LOCATION} bcbackup.sql bcbackupinfo`);
             // clean up
             await fs.unlinkSync('/tmp/bcbackupinfo');
@@ -102,6 +102,7 @@ const DatabaseController = () => {
       return res.status(500).json({ msg: 'Internal server error', err });
     }
   }
+
   const downloadBackup = async (req, res) => {
     try{
       const MyDate = new Date();
@@ -115,11 +116,57 @@ const DatabaseController = () => {
     }
   }
 
+  const restoreBackup = async (req, res) => {
+    try{
+      const { file } = req;
+      const bcbackupinfo = '/tmp/bcbackupinfo';
+      await utils.execPromise(`tar zxvf ${file.path} -C /tmp/`);
+      const fileExists = fs.existsSync(bcbackupinfo);
+      if (!fileExists){ // no info file was in archive
+        return res.status(500).json({ msg: req.t('BACKUP_R_NOINFO') });
+      } else {
+        let backupInfo = await fs.readFileSync(bcbackupinfo, "utf8");
+        backupInfo = backupInfo.split('|');
+        backupInfo[0] = new Date(backupInfo[0] * 1000);
+        backupInfo[1] = (backupInfo[1]) ? req.t('U_INCLUDED') : req.t('U_NOTINCLUDED');
+        backupInfo[2] = (backupInfo[2]) ? req.t('U_INCLUDED') : req.t('U_NOTINCLUDED');
+        backupInfo[3] = (backupInfo[3]) ? req.t('U_INCLUDED') : req.t('U_NOTINCLUDED');
+        // clean up infofile
+        await fs.unlinkSync('/tmp/bcbackupinfo');
+        return res.status(500).json({
+          msg: req.t('BACKUP_R_INFO', {
+            DATE: backupInfo[0],
+            E: backupInfo[1],
+            D: backupInfo[2],
+            U: backupInfo[3],
+          })
+        });
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: 'Internal server error', err });
+    }
+  }
+  const confirmRestore = async (req, res) => {
+    try{
+      const { username, password, database } = credentials;
+      const $response = await utils.execPromise(`mysql -u ${username} --password=${password} ${database} < /tmp/bcbackup.sql 2>&1 1> /dev/null`);
+      if (!($response) && $response.indexOf('ERROR') >= -1){
+        return res.status(500).json({ msg: `${req.t('BACKUP_R_FAILED')}${$response}` });
+      } else {
+        return res.status(200).json({ msg: req.t('BACKUP_R_SUCCESS')});
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: 'Internal server error', err });
+    }
+  }
+
 
   return {
     getAll,
     getData,
-    downloadBackup
+    downloadBackup,
+    restoreBackup,
+    confirmRestore
   };
 };
 

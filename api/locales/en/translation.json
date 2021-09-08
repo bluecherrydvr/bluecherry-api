@@ -424,8 +424,8 @@
 
 
   "MJPEG_DISABLED": "This device was disabled.",
-  "MJPEG_DEVICE_NOT_FOUND": "Device with ID %ID% was not found.",
-  "MJPEG_NO_PERMISSION": "You do not have permission to access camera ID %ID%.",
+  "MJPEG_DEVICE_NOT_FOUND": "Device with ID {{ID}} was not found.",
+  "MJPEG_NO_PERMISSION": "You do not have permission to access camera ID {{ID}}.",
   "MJPEG_DEVICE_ID_NOT_SUPPLIED": "No device ID supplied.",
 
 
@@ -433,8 +433,8 @@
   "ADD_LOCATION": "Add location",
   "LOCATION": "Folder:",
   "STORAGE_INFO_MESSAGE": "Please note that if you add a new storage location, you need to make sure that: <br /> - folder exists <br /> - folder is empty <br /> - folder belongs to user bluecherry, group bluecherry.",
-  "DIR_DOES_NOT_EXIST_OR_NOT_READABLE": "Server could not open the specified directory \"<b>%PATH%</b>\". See Note 2.",
-  "DIR_NOT_READABLE": "Specified directory \"<b>%PATH%</b>\" exists, but is not readable. See Note 2.",
+  "DIR_DOES_NOT_EXIST_OR_NOT_READABLE": "Server could not open the specified directory \"<b>{{PATH}}</b>\". See Note 2.",
+  "DIR_NOT_READABLE": "Specified directory \"<b>{{PATH}}</b>\" exists, but is not readable. See Note 2.",
   "DIR_NOT_EMPTY": "Specified directory is not empty, all contents will be deleted after it is added.",
   "DIR_OK": "Specified directory exists and is writable. Click \"save\" to add this location.",
 
@@ -448,8 +448,8 @@
   "LOG_BC": "Bluecherry log",
 
 
-  "IP_ACCESS_STATUS_F": "Could not connect to the <b>%TYPE%</b>. Please verify that the camera is turned on and the IP address is correct.",
-  "IP_ACCESS_STATUS_404": "Incorrect <b>%TYPE%</b> path, please check camera manual for correct paths.",
+  "IP_ACCESS_STATUS_F": "Could not connect to the <b>{{TYPE}}</b>. Please verify that the camera is turned on and the IP address is correct.",
+  "IP_ACCESS_STATUS_404": "Incorrect <b>{{TYPE}}</b> path, please check camera manual for correct paths.",
   "IP_ACCESS_STATUS_401": "Incorrect login or password.",
   "IP_ACCESS_STATUS_303": "Could not resolve the hostname.",
   "IP_ACCESS_NCONFIG": "Could not connect to the camera. Please verify hostname/ip address.",
@@ -502,7 +502,7 @@
   "STS_ET_M": "Motion",
   "STS_ET_C": "Continuous",
   "STS_SUBMIT": "Get statistics",
-  "STS_TOTAL_EVENTS": "Total <b>%TYPE%</b> events for the period:",
+  "STS_TOTAL_EVENTS": "Total <b>{{TYPE}}</b> events for the period:",
   "STS_PICKER_HEADER": "Choose date range and event types",
   "STS_PERCENTAGE_OF_TOTAL": "Percent of total",
   "STS_NUM_EVENTS": "Number of events",
@@ -530,7 +530,7 @@
   "NTF_E_TIME": "Start time must be before end time",
   "NTF_E_CAMS": "You must select at least one camera",
 
-  "NTF_TEMPLATE": "Send an email to <b>%USERS%</b> <br />on <b>%DAYS%</b> <br />between <b>%STIME%</b> and <b>%ETIME%</b> <br />for events on <b>%CAMERAS%</b>.",
+  "NTF_TEMPLATE": "Send an email to <b>{{USERS}}</b> <br />on <b>{{DAYS}}</b> <br />between <b>{{STIME}}</b> and <b>{{ETIME}}</b> <br />for events on <b>{{CAMERAS}}</b>.",
   "NTF_T_TO": "Send email to",
   "NTF_T_DOW": "on days",
   "NTF_T_TIME": "between hours",
@@ -551,7 +551,7 @@
   "BACKUP_R_CONF": "Restoring your database will permanently remove all current data. We sttongly suggest performing current backup before using restore.",
   "BACKUP_SUBHEADER": "save a backup of the database or restore from a saved backup",
   "BACKUP_B_TITLE": "Backup the database",
-  "BACKUP_PWD": "Please enter the password for the database user <b>%USERS%</b> to for the <b>%DBNAME%</b> database:",
+  "BACKUP_PWD": "Please enter the password for the database user <b>{{USERS}}</b> to for the <b>{{DBNAME}}</b> database:",
   "BACKUP_B_OPT": "Additional options",
   "BACKUP_B_OPT_NE": "Do not backup events data",
   "BACKUP_B_OPT_ND": "Do not backup device(s) configuration",
@@ -560,7 +560,7 @@
   "BACKUP_R_WRONG_FILETYPE": "File is expected to be a compressed tar archive. Please upload a proper backup file.",
   "BACKUP_R_NOINFO": "Could not read the backup information file. This may mean that the archive is corrupted or contains invalid data. Proceeding may cause loss of data.",
   "BACKUP_R_LABEL": "Please choose a previously saved backup:",
-  "BACKUP_R_INFO": "Backup files uploaded. <br /> <b>Backup date:</b> %DATE% <br /> <b>Event data:</b> %E% <br /><b>Device data:</b> %D%<br /><b>User data:</b> %U%",
+  "BACKUP_R_INFO": "Backup files uploaded. <br /> <b>Backup date:</b> {{DATE}} <br /> <b>Event data:</b> {{E}} <br /><b>Device data:</b> {{D}}<br /><b>User data:</b> {{U}}",
   "BACKUP_FAILED": "Could not perform the backup. Is the database password correct?",
   "BACKUP_R_FAILED": "Could not restore the database. Mysql returned the following error:<br />",
   "BACKUP_R_SUCCESS": "The database successfully restored. Please reload the page.",
