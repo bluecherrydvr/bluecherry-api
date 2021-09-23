@@ -26,6 +26,7 @@
     ]
   },
   "dependencies": {
+    "@cryptlex/lexactivator": "^3.15.1",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.2",
     "check-disk-space": "^3.0.1",
@@ -46,6 +47,7 @@
     "mysql2": "^2.3.0",
     "node-exec-promise": "^1.0.2",
     "node-libcurl": "^2.3.1-0",
+    "node-machine-id": "^1.1.12",
     "nodemailer": "^6.6.3",
     "os": "^0.1.2",
     "path": "^0.12.7",
@@ -53,7 +55,8 @@
     "sqlite3": "^4.0.0",
     "systeminformation": "^5.8.0",
     "tempnam": "^1.1.2",
-    "userid": "^1.2.5"
+    "userid": "^1.2.5",
+    "ws": "^8.2.2"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",

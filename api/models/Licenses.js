@@ -9,6 +9,7 @@ const Licenses = sequelize.define('Licenses', {
     type: Sequelize.STRING(64),
     primaryKey: true,
     allowNull: false,
+    autoIncrement: false,
   },
   authorization: {
     type: Sequelize.STRING,
