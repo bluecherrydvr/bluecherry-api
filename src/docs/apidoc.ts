@@ -1,5 +1,5 @@
-import {addDevice, addDeviceBody} from './devices';
-import { ErrorResponse } from './schemas/error';
+import { addDevice } from './devices';
+import {addDeviceBody} from './schemas/AddDeviceBody';
 
 const documentation = {
   openapi: '3.1.0',
@@ -40,7 +40,6 @@ const documentation = {
     },
     schemas: {
       addDeviceBody,
-      ErrorResponse
     },
   },
 };
