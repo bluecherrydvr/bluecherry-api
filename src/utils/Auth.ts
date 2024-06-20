@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from 'express';
-import { Server } from '../server';
+import {Server} from '../server';
 
 // Your custom "middleware" function:
 export function authenticate(

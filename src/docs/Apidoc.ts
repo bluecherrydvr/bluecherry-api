@@ -1,4 +1,4 @@
-import { addDevice } from './Devices';
+import {addDevice} from './Devices';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 
 const documentation = {
@@ -27,7 +27,7 @@ const documentation = {
   tags: [{name: 'Devices'}, {name: 'Events'}],
 
   paths: {
-    "/devices": {
+    '/devices': {
       post: addDevice,
     },
   },

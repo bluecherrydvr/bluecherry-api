@@ -15,143 +15,155 @@ const addDevice = {
     required: true,
   },
   responses: {
-    "200 - The device was created successfully": {
-      description: "This status is returned when the device was successfully created. The ID of the newly created device can be found in the `information.deviceId` field.",
+    '200 - The device was created successfully': {
+      description:
+        'This status is returned when the device was successfully created. The ID of the newly created device can be found in the `information.deviceId` field.',
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [200]
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [200],
+              },
+              message: {
+                type: 'string',
+                examples: ['Created device sucessfully!'],
+              },
+              information: {
+                type: 'array',
+                items: {
+                  type: 'object',
                 },
-                message: {
-                  type: 'string',
-                  examples: ["Created device sucessfully!"],
-                },
-                information: {
-                  type: 'array',
-                  items: {
-                    type: 'object'
-                  },
-                  examples: [ { deviceId: 4 } ]
-                }
-            } 
-          }
-        }
-      }
+                examples: [{deviceId: 4}],
+              },
+            },
+          },
+        },
+      },
     },
-    "400 - Missing Fields": {
-      description: "This status is returned when the body provided does not have all of the required fields. This response is sent with an additional field named `information` which was an array named `missing` with the names of all the missing required fields.",
+    '400 - Missing Fields': {
+      description:
+        'This status is returned when the body provided does not have all of the required fields. This response is sent with an additional field named `information` which was an array named `missing` with the names of all the missing required fields.',
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [400]
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: ['Missing fields from your request!'],
+              },
+              information: {
+                type: 'array',
+                items: {
+                  type: 'object',
                 },
-                message: {
-                  type: 'string',
-                  examples: ["Missing fields from your request!"],
-                },
-                information: {
-                  type: 'array',
-                  items: {
-                    type: 'object'
-                  },
-                  examples: [ { missing: ["camName", "ipAddr"] } ]
-                }
-            } 
-          }
-        }
-      }
+                examples: [{missing: ['camName', 'ipAddr']}],
+              },
+            },
+          },
+        },
+      },
     },
-    "400 - Invalid Body": {
-      description: "This status is returned when the body provided does not have all of the fields in the correct format. This usually happens when there is a data type mismatch.",
+    '400 - Invalid Body': {
+      description:
+        'This status is returned when the body provided does not have all of the fields in the correct format. This usually happens when there is a data type mismatch.',
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [400]
-                },
-                message: {
-                  type: 'string',
-                  examples: ["The body received does not match the expected body! Please refer to the API documentation"],
-                },
-            } 
-          }
-        }
-      }
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  'The body received does not match the expected body! Please refer to the API documentation',
+                ],
+              },
+            },
+          },
+        },
+      },
     },
-    "400 - Invalid Protocol": {
-      description: "This status is returned when the protocol provided in field name `protocol` is not one of the accepted values ('IP-RTSP' and 'IP-MJPEG').",
+    '400 - Invalid Protocol': {
+      description:
+        "This status is returned when the protocol provided in field name `protocol` is not one of the accepted values ('IP-RTSP' and 'IP-MJPEG').",
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [400]
-                },
-                message: {
-                  type: 'string',
-                  examples: ["'${body.protocol}' is not a valid protocol! Please use either '`IP-RTSP`' or '`IP-MJPEG`'"],
-                }
-            } 
-          }
-        }
-      }
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  "'${body.protocol}' is not a valid protocol! Please use either '`IP-RTSP`' or '`IP-MJPEG`'",
+                ],
+              },
+            },
+          },
+        },
+      },
     },
-    "409 - A device with that name already exists": {
-      description: "This status is returned when device was found to already exist with the name provided in the field `camName`.",
+    '409 - A device with that name already exists': {
+      description:
+        'This status is returned when device was found to already exist with the name provided in the field `camName`.',
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [409]
-                },
-                message: {
-                  type: 'string',
-                  examples: ["A device with the name '${body.camName}' already exists!"],
-                }
-            } 
-          }
-        }
-      }
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [409],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  "A device with the name '${body.camName}' already exists!",
+                ],
+              },
+            },
+          },
+        },
+      },
     },
-    "409 - A device with the same connection details already exists": {
-      description: "This status is returned when the connection details provided by the fields `ipAddr`, `port` and `rtsp`",
+    '409 - A device with the same connection details already exists': {
+      description:
+        'This status is returned when the connection details provided by the fields `ipAddr`, `port` and `rtsp`',
       content: {
-        "application/json": {
-            schema: {
-              type: 'object',
-              properties:  {
-                statusCode: {
-                  type: 'number',
-                  examples: [409]
-                },
-                message: {
-                  type: 'string',
-                  examples: ["A device with those connection details already exists!"],
-                }
-            } 
-          }
-        }
-      }
-    }
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [409],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  'A device with those connection details already exists!',
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
   },
 };
 
-
-
-export {addDevice}
+export {addDevice};
