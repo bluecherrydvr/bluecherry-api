@@ -2,14 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import {json} from 'body-parser';
 import {Logger, getLogger, configure} from 'log4js';
-import {logRequest} from './utils/logging';
+import {logRequest} from './utils/Logging';
 
 import swaggerUi from 'swagger-ui-express';
 
-import {authenticate} from './utils/auth';
+import {authenticate} from './utils/Auth';
 import {Routes} from './routes/Routes';
 
-import swaggerSpec from './docs/apidoc';
+import swaggerSpec from './docs/Apidoc';
 import {Sequelize} from 'sequelize';
 import {Models} from './models/Models';
 

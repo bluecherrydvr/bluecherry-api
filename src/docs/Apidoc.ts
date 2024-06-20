@@ -1,4 +1,4 @@
-import { addDevice } from './devices';
+import { addDevice } from './Devices';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 
 const documentation = {
