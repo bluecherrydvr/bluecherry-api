@@ -1,0 +1,44 @@
+{
+  "name": "bluecherry-api",
+  "version": "1.0.0",
+  "description": "The API for Bluecherry DVR",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon --watch \"src/**\" --ext \"ts,json,yaml\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
+    "lint": "gts lint",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm run compile",
+    "pretest": "npm run compile",
+    "posttest": "npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "not"
+  },
+  "author": "Jahleel A. @ Bluecherry Team",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@sinclair/typebox": "^0.32.31",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "log4js": "^6.9.1",
+    "mysql2": "^3.10.0",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/node": "20.11.5",
+    "@types/swagger-ui-express": "^4.1.6",
+    "gts": "^5.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.4.3"
+  }
+}
