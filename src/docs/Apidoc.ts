@@ -1,4 +1,4 @@
-import {addDevice} from './Devices';
+import {addDevice, deleteDevice} from './Devices';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 
 const documentation = {
@@ -29,6 +29,9 @@ const documentation = {
   paths: {
     '/devices': {
       post: addDevice,
+    },
+    '/devices/{deviceId}': {
+      delete: deleteDevice,
     },
   },
   components: {

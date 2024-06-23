@@ -4,6 +4,7 @@ import {AddDeviceRequest} from '../../../models/api/Requests/AddDeviceRequest';
 import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 
 import {Value} from '@sinclair/typebox/value';
+import {Server} from '../../../server';
 
 export async function addDevice(
   req: Request,
@@ -18,13 +19,11 @@ export async function addDevice(
   if (!Value.Check(AddDeviceRequest, data)) {
     let missing = Object.keys(data).filter(i => data[i] === null);
     if (missing.length > 0)
-      res
-        .status(400)
-        .send(
-          new ErrorResponse(400, 'Missing fields from your request!', {
-            missing: missing,
-          })
-        );
+      res.status(400).send(
+        new ErrorResponse(400, 'Missing fields from your request!', {
+          missing: missing,
+        })
+      );
     else
       res
         .status(400)
@@ -110,13 +109,12 @@ export async function addDevice(
     hls_window_size: data.hls_window_size,
     hls_segment_duration: data.hls_segment_duration,
     hls_segment_size: data.hls_segment_size,
-  }).then(device => {
-    res
-      .status(200)
-      .send(
-        new ErrorResponse(200, 'Created device sucessfully!', {
-          deviceId: device.toJSON().id,
-        })
-      );
+  }).then(async device => {
+    let d = await Devices.findOne({where: {device: device.dataValues.device}}); //-> Work around because sequalize nulls id
+    res.status(200).send(
+      new ErrorResponse(200, 'Created device sucessfully!', {
+        deviceId: d.dataValues.id,
+      })
+    );
   });
 }

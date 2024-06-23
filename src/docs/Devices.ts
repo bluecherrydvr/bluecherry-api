@@ -166,4 +166,66 @@ const addDevice = {
   },
 };
 
-export {addDevice};
+const deleteDevice = {
+  tags: ['Devices'],
+  summary:
+    'This route allows you to delete a device or camera frome the bluecherry server',
+  operationId: 'deleteDevice',
+  security: [{basicAuth: {}}],
+  parameters: [
+    {
+      name: 'deviceId',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'integer',
+      },
+    },
+  ],
+  responses: {
+    '200 - The device was deleted successfully': {
+      description:
+        'This status is returned when the device was successfully deleted.',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [200],
+              },
+              message: {
+                type: 'string',
+                examples: ['Delete device sucessfully!'],
+              },
+            },
+          },
+        },
+      },
+    },
+    '400 - Missing Device ID': {
+      description:
+        'This status is returned when the parameter `deviceId` is missing from the path.',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: ["The parameter 'deviceID' was not provided"],
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+export {addDevice, deleteDevice};

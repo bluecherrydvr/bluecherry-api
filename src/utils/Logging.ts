@@ -7,7 +7,7 @@ export function logRequest(
   res: Response,
   next: NextFunction
 ): void {
-  Server.Logs.trace(
+  Server.Logs.debug(
     `${req.ip} - ${new Date(Date.now()).toISOString()} "${req.method} ${req.path} HTTP/${req.httpVersion}"`
   );
   next();
