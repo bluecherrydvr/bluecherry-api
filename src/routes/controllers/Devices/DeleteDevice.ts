@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 import {Devices} from '../../../models/db/Device';
 import {Server} from '../../../server';
+import fs from 'fs';
 
 export async function deleteDevice(
   req: Request,
@@ -35,7 +36,25 @@ export async function deleteDevice(
           )
           .then((result: [any, any]) => {
             if (result[0].length > 0) {
-              let highestId = result;
+              let highestId = result[0][0].id;
+              result[0].forEach((media: any) => {
+                fs.unlink(media.filepath, err => {
+                  if (err) {
+                    Server.Logs.error(
+                      `An error occured when deleting device of ID ${deviceId} - ${err}`
+                    );
+                    res
+                      .status(500)
+                      .send(
+                        new ErrorResponse(
+                          500,
+                          `An error occured when deleting device of ID ${deviceId}! Please report this to the Bluecherry team along with logs`
+                        )
+                      );
+                    return;
+                  }
+                });
+              });
               Server.sequelize.query(
                 `DELETE FROM Media WHERE device_id='${id}' AND id <= ${highestId}`
               );
