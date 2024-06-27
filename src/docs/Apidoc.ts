@@ -1,5 +1,6 @@
-import {addDevice, deleteDevice} from './Devices';
+import {addDevice, deleteDevice, getDevice, getDevices} from './Devices';
 import {addDeviceBody} from './schemas/AddDeviceBody';
+import {device} from './schemas/Device';
 
 const documentation = {
   openapi: '3.1.0',
@@ -33,6 +34,12 @@ const documentation = {
     '/devices/{deviceId}': {
       delete: deleteDevice,
     },
+    '/devices/{format}': {
+      get: getDevices,
+    },
+    '/devices/{deviceId}/{format}': {
+      get: getDevice,
+    },
   },
   components: {
     securitySchemes: {
@@ -43,6 +50,7 @@ const documentation = {
     },
     schemas: {
       addDeviceBody,
+      device,
     },
   },
 };
