@@ -56,12 +56,12 @@ export async function addDevice(
 
   //-> Protocol Check
   if (data.protocol == 'IP-RTSP') {
-    substream_path = `${data.ipAddr}|${data.port}|${data.substream}`;
+    substream_path = `${data.ipAddr}|${data.rtspPort}|${data.substreamPath}`;
   } else if (data.protocol == 'IP-MJPEG') {
-    data.pathMjpeg = !data.rtsp.startsWith('/')
-      ? `/${data.pathMjpeg}`
-      : data.pathMjpeg;
-    substream_path = `${data.ipAddr}|${data.portMjpeg}|${data.substream}`;
+    data.mjpegPath = !data.rtspPath.startsWith('/')
+      ? `/${data.mjpegPath}`
+      : data.mjpegPath;
+    substream_path = `${data.ipAddr}|${data.mjpegPort}|${data.substreamPath}`;
   } else {
     res
       .status(400)
@@ -76,7 +76,7 @@ export async function addDevice(
 
   //-> Path Collisions
   const pathCollisions = await Devices.findAll({
-    where: {device: `${data.ipAddr}|${data.port}|${data.rtsp}`},
+    where: {device: `${data.ipAddr}|${data.rtspPort}|${data.rtspPath}`},
   });
   if (pathCollisions.length > 0) {
     res
@@ -94,18 +94,20 @@ export async function addDevice(
   Devices.create({
     device_name: data.camName,
     protocol: data.protocol,
-    device: `${data.ipAddr}|${data.port}|${data.rtsp}`, //FIXME: Output format does not match those found in the database.
-    mjpeg_path: `${data.ipAddr}|${data.portMjpeg}|${data.pathMjpeg}`,
+    device: `${data.ipAddr}|${data.rtspPort}|${data.rtspPath}`,
+    mjpeg_path: `${data.ipAddr}|${data.mjpegPort}|${data.mjpegPath}`,
     audio_disabled: data.audio_enabled ? 0 : 1,
-    substream_mode: 0, //TODO: Find out if value ever differs
+    substream_mode: data.substreamMode,
     substream_path: substream_path,
-    debug_level: 0, //TODO: Find pit if value ever differes
+    debug_level: 0,
     rtsp_username: data.username,
     rtsp_password: data.password,
     model: data.model,
-    driver: '',
+    driver: '',               //-> Default values to satisfy BC Server
+    resolutionX: 640,
+    resolutionY: 480,
     rtsp_rtp_prefer_tcp: data.preferTcp,
-    onvif_port: data.portOnvif,
+    onvif_port: data.onvifPort,
     hls_window_size: data.hls_window_size,
     hls_segment_duration: data.hls_segment_duration,
     hls_segment_size: data.hls_segment_size,

@@ -6,9 +6,10 @@ const addDeviceBody = {
     'username',
     'password',
     'protocol',
-    'rtsp',
+    'rtspPath',
     'substream',
-    'port',
+    'substreamPath',
+    'rtspPort',
     'preferTcp',
   ],
   properties: {
@@ -37,17 +38,17 @@ const addDeviceBody = {
         'The protocol to be used to acces this camera. Can only be "IP-RTSP" or "IP-MJPEG"',
       examples: ['IP-RTSP', 'IP-MJPEG'],
     },
-    rtsp: {
+    rtspPath: {
       type: 'string',
       examples: ['/'],
     },
-    substream: {
+    substreamPath: {
       type: 'string',
       examples: [
         '/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif',
       ],
     },
-    port: {
+    rtspPort: {
       type: 'number',
       examples: [80, 554],
     },
@@ -55,33 +56,37 @@ const addDeviceBody = {
       type: 'boolean',
       examples: [true, false],
     },
+    substreamMode: {
+      type: 'number',
+      examples: [0],
+    },
     model: {
       type: 'string',
       examples: ['Gerneric', 'Lorex'],
     },
-    pathMjpeg: {
+    mjpegPath: {
       type: 'string',
       examples: ['/'],
     },
-    portMjpeg: {
+    mjpegPort: {
       type: 'number',
       examples: [554, 80],
     },
-    portOnvif: {
+    onvifPort: {
       type: 'number',
       examples: [80],
     },
-    hls_window_size: {
+    hlsWindowSize: {
       type: 'number',
       examples: [5],
     },
-    hls_segment_size: {
+    hlsSegmentSize: {
       type: 'number',
     },
-    hls_segment_duration: {
+    hlsSegmentDuration: {
       type: 'number',
     },
-    audio_enabled: {
+    audioEnabled: {
       type: 'boolean',
       examples: [false, true],
     },
