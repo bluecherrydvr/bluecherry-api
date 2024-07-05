@@ -253,7 +253,7 @@ const getDevice = {
     },
   ],
   responses: {
-    '200 - The device was deleted successfully': {
+    '200 - The device was found successfully': {
       description:
         'This status is returned when the device was successfully found and its information returned.',
       content: {
@@ -267,7 +267,7 @@ const getDevice = {
               },
               message: {
                 type: 'string',
-                examples: ['Delete device sucessfully!'],
+                examples: ['Found device sucessfully!'],
               },
             },
           },
@@ -302,7 +302,7 @@ const getDevices = {
   tags: ['Devices'],
   summary:
     'This route allows you to get infomration about all devices on the Blucherry server',
-  operationId: 'getDevice',
+  operationId: 'getDevices',
   security: [{basicAuth: {}}],
   parameters: [
     {

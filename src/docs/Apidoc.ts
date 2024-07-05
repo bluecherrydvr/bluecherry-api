@@ -1,6 +1,9 @@
 import {addDevice, deleteDevice, getDevice, getDevices} from './Devices';
+import {getEvent, getEvents} from './Events';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 import {device} from './schemas/Device';
+import {event} from './schemas/Event';
+
 
 const documentation = {
   openapi: '3.1.0',
@@ -40,6 +43,12 @@ const documentation = {
     '/devices/{deviceId}/{format}': {
       get: getDevice,
     },
+    '/events/': {
+      get: getEvents,
+    },
+    '/events/{eventId}': {
+      get: getEvent,
+    },
   },
   components: {
     securitySchemes: {
@@ -51,6 +60,7 @@ const documentation = {
     schemas: {
       addDeviceBody,
       device,
+      event
     },
   },
 };
