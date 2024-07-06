@@ -8,7 +8,7 @@ import {event} from './schemas/Event';
 const documentation = {
   openapi: '3.1.0',
   info: {
-    version: '1.0.0',
+    version: '0.3.2',
     title: 'Bluecherry DRV Server API',
     description:
       'The Bluecherry DVR Server API allows users to use software to create custom intergrations with Blucherry DVR',

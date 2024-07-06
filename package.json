@@ -1,6 +1,6 @@
 {
   "name": "bluecherry-api",
-  "version": "1.0.0",
+  "version": "0.3.2",
   "description": "The API for Bluecherry DVR",
   "main": "index.js",
   "scripts": {

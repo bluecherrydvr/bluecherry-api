@@ -1,6 +1,6 @@
-# Naming Convntions
+# Bluecherry API
 
-- `Models.ts`
-- `Controlers.ts`
-- `Routes.ts`
-- `serverCode.ts`
+## Setup
+1. Clone repository
+2. Run `npm i --save`
+3. To start, run `npm run test` (Until this API reaches v1, there is no standalone run command)
