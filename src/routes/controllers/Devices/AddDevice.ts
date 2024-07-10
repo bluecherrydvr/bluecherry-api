@@ -103,7 +103,7 @@ export async function addDevice(
     rtsp_username: data.username,
     rtsp_password: data.password,
     model: data.model,
-    driver: '',               //-> Default values to satisfy BC Server
+    driver: '', //-> Default values to satisfy BC Server
     resolutionX: 640,
     resolutionY: 480,
     rtsp_rtp_prefer_tcp: data.preferTcp,

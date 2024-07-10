@@ -326,7 +326,7 @@ const getDevices = {
               devices: {
                 type: 'array',
                 items: {
-                  $ref: '#/components/schemas/device', //FIXME: Swagger no like the foramt?? 
+                  $ref: '#/components/schemas/device', //FIXME: Swagger no like the foramt??
                 },
               },
             },
@@ -382,7 +382,7 @@ const updateDevice = {
       schema: {
         type: 'integer',
       },
-    }
+    },
   ],
   responses: {
     '200 - The device was updated successfully': {
@@ -400,7 +400,7 @@ const updateDevice = {
               message: {
                 type: 'string',
                 examples: ['Updated device sucessfully!'],
-              }
+              },
             },
           },
         },
@@ -420,7 +420,9 @@ const updateDevice = {
               },
               message: {
                 type: 'string',
-                examples: ['You need to edit at least 1 property of the device!'],
+                examples: [
+                  'You need to edit at least 1 property of the device!',
+                ],
               },
             },
           },

@@ -1,11 +1,16 @@
-import {addDevice, deleteDevice, getDevice, getDevices, updateDevice} from './Devices';
+import {
+  addDevice,
+  deleteDevice,
+  getDevice,
+  getDevices,
+  updateDevice,
+} from './Devices';
 import {getEvent, getEvents} from './Events';
-import { getMedia } from './Media';
+import {getMedia} from './Media';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 import {device} from './schemas/Device';
 import {event} from './schemas/Event';
-import { updateDeviceBody } from './schemas/UpdateDeviceBody';
-
+import {updateDeviceBody} from './schemas/UpdateDeviceBody';
 
 const documentation = {
   openapi: '3.1.0',
@@ -38,7 +43,7 @@ const documentation = {
     },
     '/devices/{deviceId}': {
       delete: deleteDevice,
-      put: updateDevice
+      put: updateDevice,
     },
     '/devices/{format}': {
       get: getDevices,
@@ -67,7 +72,7 @@ const documentation = {
       addDeviceBody,
       updateDeviceBody,
       device,
-      event
+      event,
     },
   },
 };

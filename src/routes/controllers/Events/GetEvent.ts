@@ -18,10 +18,10 @@ export async function getEvent(
         if (event[key] instanceof Buffer) event[key] = `${event[key]}`;
       });
 
-        res
-          .status(200)
-          .set('Content-Type', 'application/json')
-          .json({events: [EventBody(event)]});
+      res
+        .status(200)
+        .set('Content-Type', 'application/json')
+        .json({events: [EventBody(event)]});
     })
     .catch(err => {
       Server.Logs.error(
@@ -44,21 +44,23 @@ export async function getEvents(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  let limit = /^\d+$/.test(String(req.query.limit)) ? Number(req.query.limit) : 5;
+  let limit = /^\d+$/.test(String(req.query.limit))
+    ? Number(req.query.limit)
+    : 5;
 
-  Events.findAll({ limit: limit })
+  Events.findAll({limit: limit})
     .then(eventArray => {
-        eventArray.forEach(eventObject => {
+      eventArray.forEach(eventObject => {
         let event = eventObject.dataValues;
         Object.keys(event).forEach(function (key) {
           if (event[key] instanceof Buffer) event[key] = `${event[key]}`;
         });
       });
 
-        res
-          .status(200)
-          .set('Content-Type', 'application/json')
-          .json({events: eventArray.map(e => EventBody(e))});
+      res
+        .status(200)
+        .set('Content-Type', 'application/json')
+        .json({events: eventArray.map(e => EventBody(e))});
     })
     .catch(err => {
       Server.Logs.error(
@@ -76,16 +78,15 @@ export async function getEvents(
     });
 }
 
-
 function EventBody(e: any) {
-    let dateObj = new Date(e.time * 1000);
-    let utcString = dateObj.toUTCString();
-    let time = utcString.slice(-11, -4);
-    return {
-        id: e.id,
-        date: time,
-        mediaUrl: `https://${process.env.BC_HOST}/media/request.php?id=${e.media_id}`,
-        duration: e.length,
-        // size:  e.size //TODO: Get file size
-    }
+  let dateObj = new Date(e.time * 1000);
+  let utcString = dateObj.toUTCString();
+  let time = utcString.slice(-11, -4);
+  return {
+    id: e.id,
+    date: time,
+    mediaUrl: `https://${process.env.BC_HOST}/media/request.php?id=${e.media_id}`,
+    duration: e.length,
+    // size:  e.size //TODO: Get file size
+  };
 }

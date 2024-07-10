@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getEvent, getEvents } from './GetEvent';
+import {getEvent, getEvents} from './GetEvent';
 
 const api = Router();
 

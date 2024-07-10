@@ -2,7 +2,7 @@ import {Router} from 'express';
 import {addDevice} from './AddDevice';
 import {deleteDevice} from './DeleteDevice';
 import {getDevice, getDevices} from './GetDevice';
-import { updateDevice } from './UpdateDevice';
+import {updateDevice} from './UpdateDevice';
 
 const api = Router();
 

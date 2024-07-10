@@ -16,11 +16,11 @@ const event = {
     duration: {
       type: 'number',
       examples: [11, 2],
-    },    
+    },
     size: {
       type: 'number',
       examples: [11, 2],
-    } //TODO: Write this documentation
+    }, //TODO: Write this documentation
   },
 };
 

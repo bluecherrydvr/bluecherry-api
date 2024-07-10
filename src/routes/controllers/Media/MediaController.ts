@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getMedia } from './GetMedia';
+import {getMedia} from './GetMedia';
 
 const api = Router();
 
