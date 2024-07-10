@@ -1,5 +1,5 @@
   const getEvent = {
-    tags: ['events'],
+    tags: ['Events'],
     summary:
       'This route allows you to get infomration about a event with an id of `eventId` on the Blucherry server',
     operationId: 'getEvent',
@@ -61,7 +61,7 @@
   };
   
   const getEvents = {
-    tags: ['events'],
+    tags: ['Events'],
     summary:
       'This route allows you to get infomration about all events on the Blucherry server',
     operationId: 'getEvents',

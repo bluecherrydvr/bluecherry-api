@@ -1,5 +1,6 @@
 import {addDevice, deleteDevice, getDevice, getDevices} from './Devices';
 import {getEvent, getEvents} from './Events';
+import { getMedia } from './Media';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 import {device} from './schemas/Device';
 import {event} from './schemas/Event';
@@ -14,12 +15,12 @@ const documentation = {
       'The Bluecherry DVR Server API allows users to use software to create custom intergrations with Blucherry DVR',
     contact: {
       name: 'Bluecherry Team',
-      email: 'chall@bluecherry.com', //TODO: Update this email
+      email: 'chall@corp.bluecherry.com', //TODO: Update this email
       url: 'https://github.com/bluecherrydvr/',
     },
     license: {
-      name: 'GPL-2.0',
-      url: 'https://github.com/bluecherrydvr/bluecherry-apps/blob/master/LICENSE',
+      name: 'AGPL-2.0',
+      url: 'https://github.com/bluecherrydvr/bluecherry-api/blob/master/LICENSE',
     },
   },
   servers: [
@@ -48,6 +49,9 @@ const documentation = {
     },
     '/events/{eventId}': {
       get: getEvent,
+    },
+    '/media/{mediaId}': {
+      get: getMedia,
     },
   },
   components: {

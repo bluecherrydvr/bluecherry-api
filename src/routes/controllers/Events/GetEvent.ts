@@ -1,9 +1,7 @@
 import {Request, Response, NextFunction} from 'express';
 import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 import {Events} from '../../../models/db/Event';
-import {CreateCameraXML} from '../../../utils/Conversions';
 import {Server} from '../../../server';
-import fs from 'fs';
 
 export async function getEvent(
   req: Request,
