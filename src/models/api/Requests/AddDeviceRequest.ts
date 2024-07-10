@@ -2,7 +2,7 @@ import {Type} from '@sinclair/typebox';
 
 const AddDeviceRequest = Type.Object({
   camName: Type.String({default: null}),
-  ipAddr: Type.String({default: null}),
+  ipAddress: Type.String({default: null}),
   username: Type.String({default: null}),
   password: Type.String({default: null}),
   protocol: Type.String({default: null}),

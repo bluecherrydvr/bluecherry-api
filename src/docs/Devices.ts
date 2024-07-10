@@ -358,4 +358,168 @@ const getDevices = {
   },
 };
 
-export {addDevice, getDevice, getDevices, deleteDevice};
+const updateDevice = {
+  tags: ['Devices'],
+  summary:
+    'This route allows you to get infomration about a device with an id of `deviceId` on the Blucherry server',
+  operationId: 'updateDevice',
+  security: [{basicAuth: {}}],
+  requestBody: {
+    content: {
+      'application/json': {
+        schema: {
+          $ref: '#/components/schemas/updateDeviceBody',
+        },
+      },
+    },
+    required: true,
+  },
+  parameters: [
+    {
+      name: 'deviceId',
+      in: 'path',
+      required: true,
+      schema: {
+        type: 'integer',
+      },
+    }
+  ],
+  responses: {
+    '200 - The device was updated successfully': {
+      description:
+        'This status is returned when the device was successfully updated.',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [200],
+              },
+              message: {
+                type: 'string',
+                examples: ['Updated device sucessfully!'],
+              }
+            },
+          },
+        },
+      },
+    },
+    '400 - Missing Fields': {
+      description:
+        'This status is returned when the body provided does not have all of the required fields. This endpoint requires atleast one field be updated',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: ['You need to edit at least 1 property of the device!'],
+              },
+            },
+          },
+        },
+      },
+    },
+    '400 - Invalid Body': {
+      description:
+        'This status is returned when the body provided does not have all of the fields in the correct format. This usually happens when there is a data type mismatch.',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  'The body received does not match the expected body! Please refer to the API documentation',
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+    '400 - Invalid Protocol': {
+      description:
+        "This status is returned when the protocol provided in field name `protocol` is not one of the accepted values ('IP-RTSP' and 'IP-MJPEG').",
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [400],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  "'${body.protocol}' is not a valid protocol! Please use either '`IP-RTSP`' or '`IP-MJPEG`'",
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+    '409 - A device with that name already exists': {
+      description:
+        'This status is returned when device was found to already exist with the name provided in the field `camName`.',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [409],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  "A device with the name '${body.camName}' already exists!",
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+    '409 - A device with the same connection details already exists': {
+      description:
+        'This status is returned when the connection details provided by the fields `ipAddr`, `port` and `rtsp`',
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              statusCode: {
+                type: 'number',
+                examples: [409],
+              },
+              message: {
+                type: 'string',
+                examples: [
+                  'A device with those connection details already exists!',
+                ],
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
+
+export {addDevice, getDevice, getDevices, deleteDevice, updateDevice};

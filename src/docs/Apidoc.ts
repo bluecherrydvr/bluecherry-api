@@ -1,9 +1,10 @@
-import {addDevice, deleteDevice, getDevice, getDevices} from './Devices';
+import {addDevice, deleteDevice, getDevice, getDevices, updateDevice} from './Devices';
 import {getEvent, getEvents} from './Events';
 import { getMedia } from './Media';
 import {addDeviceBody} from './schemas/AddDeviceBody';
 import {device} from './schemas/Device';
 import {event} from './schemas/Event';
+import { updateDeviceBody } from './schemas/UpdateDeviceBody';
 
 
 const documentation = {
@@ -37,6 +38,7 @@ const documentation = {
     },
     '/devices/{deviceId}': {
       delete: deleteDevice,
+      put: updateDevice
     },
     '/devices/{format}': {
       get: getDevices,
@@ -63,6 +65,7 @@ const documentation = {
     },
     schemas: {
       addDeviceBody,
+      updateDeviceBody,
       device,
       event
     },

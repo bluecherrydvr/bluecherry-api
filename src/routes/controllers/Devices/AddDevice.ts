@@ -56,12 +56,12 @@ export async function addDevice(
 
   //-> Protocol Check
   if (data.protocol == 'IP-RTSP') {
-    substream_path = `${data.ipAddr}|${data.rtspPort}|${data.substreamPath}`;
+    substream_path = `${data.ipAddress}|${data.rtspPort}|${data.substreamPath}`;
   } else if (data.protocol == 'IP-MJPEG') {
     data.mjpegPath = !data.rtspPath.startsWith('/')
       ? `/${data.mjpegPath}`
       : data.mjpegPath;
-    substream_path = `${data.ipAddr}|${data.mjpegPort}|${data.substreamPath}`;
+    substream_path = `${data.ipAddress}|${data.mjpegPort}|${data.substreamPath}`;
   } else {
     res
       .status(400)
@@ -76,7 +76,7 @@ export async function addDevice(
 
   //-> Path Collisions
   const pathCollisions = await Devices.findAll({
-    where: {device: `${data.ipAddr}|${data.rtspPort}|${data.rtspPath}`},
+    where: {device: `${data.ipAddress}|${data.rtspPort}|${data.rtspPath}`},
   });
   if (pathCollisions.length > 0) {
     res
@@ -94,8 +94,8 @@ export async function addDevice(
   Devices.create({
     device_name: data.camName,
     protocol: data.protocol,
-    device: `${data.ipAddr}|${data.rtspPort}|${data.rtspPath}`,
-    mjpeg_path: `${data.ipAddr}|${data.mjpegPort}|${data.mjpegPath}`,
+    device: `${data.ipAddress}|${data.rtspPort}|${data.rtspPath}`,
+    mjpeg_path: `${data.ipAddress}|${data.mjpegPort}|${data.mjpegPath}`,
     audio_disabled: data.audio_enabled ? 0 : 1,
     substream_mode: data.substreamMode,
     substream_path: substream_path,
