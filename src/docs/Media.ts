@@ -1,7 +1,7 @@
 const getMedia = {
   tags: ['Media'],
   summary:
-    'This route allows you to get infomration about a media with an id of `mediaId` on the Blucherry server',
+    'This route allows you to get information about a media with an id of `mediaId` on the Blucherry server',
   operationId: 'getMedia',
   security: [{basicAuth: {}}],
   parameters: [
