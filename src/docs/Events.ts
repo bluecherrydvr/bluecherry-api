@@ -1,7 +1,7 @@
 const getEvent = {
   tags: ['Events'],
   summary:
-    'This route allows you to get infomration about a event with an id of `eventId` on the Blucherry server',
+    'This route allows you to get information about a event with an id of `eventId` on the Blucherry server',
   operationId: 'getEvent',
   security: [{basicAuth: {}}],
   parameters: [
@@ -63,7 +63,7 @@ const getEvent = {
 const getEvents = {
   tags: ['Events'],
   summary:
-    'This route allows you to get infomration about all events on the Blucherry server',
+    'This route allows you to get information about all events on the Blucherry server',
   operationId: 'getEvents',
   security: [{basicAuth: {}}],
   parameters: [
