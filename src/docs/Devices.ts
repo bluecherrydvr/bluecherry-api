@@ -231,7 +231,7 @@ const deleteDevice = {
 const getDevice = {
   tags: ['Devices'],
   summary:
-    'This route allows you to get infomration about a device with an id of `deviceId` on the Blucherry server',
+    'This route allows you to get information about a device with an id of `deviceId` on the Blucherry server',
   operationId: 'getDevice',
   security: [{basicAuth: {}}],
   parameters: [
@@ -301,7 +301,7 @@ const getDevice = {
 const getDevices = {
   tags: ['Devices'],
   summary:
-    'This route allows you to get infomration about all devices on the Blucherry server',
+    'This route allows you to get information about all devices on the Blucherry server',
   operationId: 'getDevices',
   security: [{basicAuth: {}}],
   parameters: [
@@ -361,7 +361,7 @@ const getDevices = {
 const updateDevice = {
   tags: ['Devices'],
   summary:
-    'This route allows you to get infomration about a device with an id of `deviceId` on the Blucherry server',
+    'This route allows you to get information about a device with an id of `deviceId` on the Blucherry server',
   operationId: 'updateDevice',
   security: [{basicAuth: {}}],
   requestBody: {
