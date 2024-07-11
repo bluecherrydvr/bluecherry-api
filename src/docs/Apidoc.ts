@@ -16,12 +16,12 @@ const documentation = {
   openapi: '3.1.0',
   info: {
     version: '0.3.2',
-    title: 'Bluecherry DRV Server API',
+    title: 'Bluecherry Server API',
     description:
-      'The Bluecherry DVR Server API allows users to use software to create custom intergrations with Blucherry DVR',
+      'The Bluecherry Server API allows users to use software to create custom intergrations with Blucherry DVR',
     contact: {
       name: 'Bluecherry Team',
-      email: 'chall@corp.bluecherry.com', //TODO: Update this email
+      email: 'support@bluecherrydvr.com', 
       url: 'https://github.com/bluecherrydvr/',
     },
     license: {
