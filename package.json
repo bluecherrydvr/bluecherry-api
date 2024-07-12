@@ -1,9 +1,10 @@
 {
   "name": "bluecherry-api",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "description": "The API for Bluecherry DVR",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node src/index.ts",
     "test": "nodemon --watch \"src/**\" --ext \"ts,json,yaml\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/index.ts\"",
     "lint": "gts lint",
     "clean": "gts clean",

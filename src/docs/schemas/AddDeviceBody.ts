@@ -17,7 +17,7 @@ const addDeviceBody = {
       type: 'string',
       examples: ['Back Door', 'Pool'],
     },
-    ipAddr: {
+    ipAddress: {
       type: 'string',
       examples: ['192.168.255.255', '10.2.5.255'],
     },
