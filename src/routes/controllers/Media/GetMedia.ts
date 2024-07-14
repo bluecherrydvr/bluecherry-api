@@ -3,7 +3,7 @@ import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 import {Events} from '../../../models/db/Event';
 import {Media} from '../../../models/db/Media';
 import {Server} from '../../../server';
-import { EventBody } from '../Events/GetEvent';
+import {EventBody} from '../Events/GetEvent';
 
 export async function getMedia(
   req: Request,
@@ -17,7 +17,13 @@ export async function getMedia(
       Events.findOne({where: {media_id: mediaId}}).then(async eventObject => {
         let media = mediaObject.dataValues;
         let event = await EventBody(eventObject);
-        res.set('Content-Type', 'video/mp4').set("Content-Duration", new Date(event.duration * 1000).toISOString().slice(11, 19)).sendFile(media.filepath);
+        res
+          .set('Content-Type', 'video/mp4')
+          .set(
+            'Content-Duration',
+            new Date(event.duration * 1000).toISOString().slice(11, 19)
+          )
+          .sendFile(media.filepath);
       });
     })
     .catch(err => {

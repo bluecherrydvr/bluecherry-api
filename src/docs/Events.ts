@@ -71,7 +71,7 @@ const getEvents = {
       name: 'limit',
       in: 'query ', //FIXME: Swagger doesn't use query parameters??
       required: false,
-      description: "Limts the number of results",
+      description: 'Limts the number of results',
       schema: {
         type: 'number',
       },
@@ -80,7 +80,7 @@ const getEvents = {
       name: 'device',
       in: 'query ', //FIXME: Swagger doesn't use query parameters??
       required: false,
-      description: "Limits results to events from a specific device",
+      description: 'Limits results to events from a specific device',
       schema: {
         type: 'number',
       },
@@ -89,7 +89,8 @@ const getEvents = {
       name: 'start',
       in: 'query ', //FIXME: Swagger doesn't use query parameters??
       required: false,
-      description: "Limts results to events occuring at and after this time (To be given as a UNIX timestamp)",
+      description:
+        'Limts results to events occuring at and after this time (To be given as a UNIX timestamp)',
       schema: {
         type: 'number',
       },
@@ -98,7 +99,8 @@ const getEvents = {
       name: 'end',
       in: 'query ', //FIXME: Swagger doesn't use query parameters??
       required: false,
-      description: "Limts results to events occuring at and before this time (To be given as a UNIX timestamp)",
+      description:
+        'Limts results to events occuring at and before this time (To be given as a UNIX timestamp)',
       schema: {
         type: 'number',
       },

@@ -21,7 +21,7 @@ const documentation = {
       'The Bluecherry Server API allows users to use software to create custom intergrations with Blucherry DVR',
     contact: {
       name: 'Bluecherry Team',
-      email: 'support@bluecherrydvr.com', 
+      email: 'support@bluecherrydvr.com',
       url: 'https://github.com/bluecherrydvr/',
     },
     license: {

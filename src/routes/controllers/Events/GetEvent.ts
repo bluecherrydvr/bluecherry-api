@@ -4,8 +4,7 @@ import {Events} from '../../../models/db/Event';
 import {Media} from '../../../models/db/Media';
 import {Server} from '../../../server';
 import fs from 'fs';
-import { Op } from 'sequelize';
-
+import {Op} from 'sequelize';
 
 //TODO: Add route to get event media from specfic device between date 1 and date 2. Also send back whether it was motion or continuious
 
@@ -54,51 +53,54 @@ export async function getEvents(
     ? Number(req.query.limit)
     : 5;
 
-    
   let deviceId = req.query.device ?? -1;
   let startDate = req.query.start ?? -1;
   let endDate = req.query.end ?? -1;
 
   let where = {};
 
-  if(deviceId != -1) {
-    where = { ...where, device_id: deviceId }
+  if (deviceId != -1) {
+    where = {...where, device_id: deviceId};
   }
-  if(startDate != -1 && endDate != -1) {
+  if (startDate != -1 && endDate != -1) {
     where = {
       ...where,
-      [Op.and]:[
-      { time: {
-        [Op.gte]: startDate
-      } },
-      {time: {
-        [Op.lte]: endDate
-      }}
-    ]
-    }
-  }
-  else if(startDate != -1) {
-    where = {
-      ...where,
-      time: {
-        [Op.gte]: startDate
-      }
-  }
-}
-  else if(endDate != -1) {
+      [Op.and]: [
+        {
+          time: {
+            [Op.gte]: startDate,
+          },
+        },
+        {
+          time: {
+            [Op.lte]: endDate,
+          },
+        },
+      ],
+    };
+  } else if (startDate != -1) {
     where = {
       ...where,
       time: {
-        [Op.lte]: endDate
-      }
+        [Op.gte]: startDate,
+      },
+    };
+  } else if (endDate != -1) {
+    where = {
+      ...where,
+      time: {
+        [Op.lte]: endDate,
+      },
+    };
   }
-}
 
   Events.findAll({limit: limit, where: where})
     .then(async eventArray => {
-      let events = await Promise.all(eventArray.map(async (e) => {
-        return await EventBody(e);
-      }));
+      let events = await Promise.all(
+        eventArray.map(async e => {
+          return await EventBody(e);
+        })
+      );
 
       res
         .status(200)
@@ -115,7 +117,7 @@ export async function getEvents(
           new ErrorResponse(
             404,
             `No events were found! If you are expecting results, please first check your bluecherry database. If there are events there, please contact the Bluecherry team along with log files.`,
-            { searchQuery: {} }
+            {searchQuery: {}}
           )
         );
       return;
@@ -126,7 +128,7 @@ export async function EventBody(e: any) {
   let dateObj = new Date(e.time * 1000);
   let utcString = dateObj.toUTCString();
 
-  let media = (await Media.findOne({ where: { id: e.media_id } })).dataValues;
+  let media = (await Media.findOne({where: {id: e.media_id}})).dataValues;
   let size = fs.statSync(media.filepath).size;
 
   return {
@@ -136,6 +138,6 @@ export async function EventBody(e: any) {
     mediaUrl: `https://${process.env.BC_HOST}:${process.env.PORT}/media/${e.media_id}`,
     duration: e.length - 3, // TODO: Investigate why times are awlways 3 seconds off
     mode: e.type_id,
-    size:  size
+    size: size,
   };
 }
