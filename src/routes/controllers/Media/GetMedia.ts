@@ -13,10 +13,10 @@ export async function getMedia(
   let mediaId = req.params.mediaId ?? -1;
 
   Media.findOne({where: {id: mediaId}})
-    .then(mediaObject => {
-      Events.findOne({where: {media_id: mediaId}}).then(eventObject => {
+    .then(async mediaObject => {
+      Events.findOne({where: {media_id: mediaId}}).then(async eventObject => {
         let media = mediaObject.dataValues;
-        let event = EventBody(eventObject);
+        let event = await EventBody(eventObject);
         res.set('Content-Type', 'video/mp4').set("Content-Duration", new Date(event.duration * 1000).toISOString().slice(11, 19)).sendFile(media.filepath);
       });
     })

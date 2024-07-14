@@ -18,11 +18,19 @@ const getMedia = {
     '200 - The media was found successfully': {
       description:
         'This status is returned when the media was successfully found and its information returned.',
+      headers: {
+        "Content-Duration": {
+          schema: {
+            type: "Date",
+          },
+          description: "The length of the video in hh:mm:ss"
+        }
+        },
       content: {
         'video/mp4': {
           schema: {
-            type: 'video',
-            properties: 'Video File',
+            type: 'string',
+            format: 'binary'
           },
         },
       },
