@@ -3,6 +3,9 @@ import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 import {Events} from '../../../models/db/Event';
 import {Server} from '../../../server';
 
+
+//TODO: Add route to get event media from specfic device between date 1 and date 2. Also send back whether it was motion or continuious
+
 export async function getEvent(
   req: Request,
   res: Response,
@@ -78,15 +81,15 @@ export async function getEvents(
     });
 }
 
-function EventBody(e: any) {
+export function EventBody(e: any) {
   let dateObj = new Date(e.time * 1000);
   let utcString = dateObj.toUTCString();
   let time = utcString.slice(-11, -4);
   return {
     id: e.id,
     date: time,
-    mediaUrl: `https://${process.env.BC_HOST}/media/request.php?id=${e.media_id}`,
-    duration: e.length,
+    mediaUrl: `https://${process.env.BC_HOST}/media/${e.media_id}`,
+    duration: e.length - 3, // TODO: Investigate why times are awlways 3 seconds off
     // size:  e.size //TODO: Get file size
   };
 }

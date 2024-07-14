@@ -15,7 +15,7 @@ import {updateDeviceBody} from './schemas/UpdateDeviceBody';
 const documentation = {
   openapi: '3.1.0',
   info: {
-    version: '0.3.4',
+    version: '0.3.5',
     title: 'Bluecherry Server API',
     description:
       'The Bluecherry Server API allows users to use software to create custom intergrations with Blucherry DVR',
