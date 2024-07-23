@@ -98,7 +98,7 @@ export async function getEvents(
     .then(async eventArray => {
       let events = await Promise.all(
         eventArray.map(async e => {
-          return await EventBody(e);
+          return await EventBody(e.dataValues);
         })
       );
 
@@ -125,7 +125,7 @@ export async function getEvents(
 }
 
 export async function EventBody(e: any) {
-  let dateObj = new Date(e.time * 1000);
+  let dateObj = new Date(e.time);
   let utcString = dateObj.toUTCString();
 
   let media = (await Media.findOne({where: {id: e.media_id}})).dataValues;
