@@ -125,7 +125,7 @@ export async function getEvents(
 }
 
 export async function EventBody(e: any) {
-  let dateObj = new Date(e.time);
+  let dateObj = new Date(e.time* 1000);
   let utcString = dateObj.toUTCString();
 
   let media = (await Media.findOne({where: {id: e.media_id}})).dataValues;
