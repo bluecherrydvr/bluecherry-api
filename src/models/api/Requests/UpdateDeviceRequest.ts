@@ -1,7 +1,7 @@
 import {Type} from '@sinclair/typebox';
 
 const UpdateDeviceRequest = Type.Object({
-  camName: Type.String(),
+  camName: Type.Optional(Type.String()),
   ipAddress: Type.Optional(Type.String()),
   username: Type.Optional(Type.String()),
   password: Type.Optional(Type.String()),

@@ -3,7 +3,7 @@ import {Server} from '../../server';
 
 class Events extends Model {}
 
-function Register(): void {
+function Register(sequelize = Server.sequelize): void {
   Events.init(
     {
       id: {primaryKey: true, type: DataTypes.INTEGER},
@@ -16,7 +16,7 @@ function Register(): void {
       media_id: DataTypes.INTEGER,
       details: DataTypes.TEXT,
     },
-    {sequelize: Server.sequelize, tableName: 'EventsCam', modelName: 'Events'}
+    {sequelize: sequelize, tableName: 'EventsCam', modelName: 'Events'}
   );
 }
 

@@ -3,7 +3,7 @@ import {Server} from '../../server';
 
 class Devices extends Model {}
 
-function Register(): void {
+function Register(sequelize = Server.sequelize): void {
   Devices.init(
     {
       audio_disabled: DataTypes.BOOLEAN,
@@ -57,7 +57,7 @@ function Register(): void {
       video_interval: DataTypes.SMALLINT,
       video_quality: DataTypes.SMALLINT,
     },
-    {sequelize: Server.sequelize, modelName: 'Devices'}
+    {sequelize: sequelize, modelName: 'Devices'}
   );
 }
 

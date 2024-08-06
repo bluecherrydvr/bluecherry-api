@@ -60,6 +60,7 @@ export async function updateDevice(
     const nameCollisions = await Devices.findAll({
       where: {device_name: data.camName},
     });
+
     //-> Device collisions
     if (nameCollisions.length > 0) {
       res
