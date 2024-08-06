@@ -22,11 +22,15 @@ export async function getEvent(
       Object.keys(event).forEach(function (key) {
         if (event[key] instanceof Buffer) event[key] = `${event[key]}`;
       });
+      
+      Media.findOne({where: { id: event.media_id }}).then(media => {
+        let size = fs.statSync(media.dataValues.filepath).size;
 
-      res
+        res
         .status(200)
         .set('Content-Type', 'application/json')
-        .json({events: [await EventBody(event)]});
+        .json({events: [{...EventBody(event), size: size}]});
+      })
     })
     .catch(err => {
       Server.Logs.error(
@@ -96,16 +100,28 @@ export async function getEvents(
 
   Events.findAll({limit: limit, where: where})
     .then(async eventArray => {
-      let events = await Promise.all(
-        eventArray.map(async e => {
-          return await EventBody(e.dataValues);
-        })
-      );
+      let mediaIds = eventArray.map(e => e.dataValues.media_id);
 
-      res
+      Media.findAll({where: {
+        id: {
+          [Op.in]: mediaIds
+        }
+      }}).then((mediaArrays) => {
+        
+        let events = eventArray.map(event => {
+          if(event.dataValues.media_id == null)
+            return {...EventBody(event.dataValues),   size: -1 }
+          else{
+            let size = fs.statSync(mediaArrays.find(m => m.dataValues.id == event.dataValues.media_id).dataValues.filepath).size;
+            return {...EventBody(event.dataValues),   size: size }
+          }
+        });
+
+        res
         .status(200)
         .set('Content-Type', 'application/json')
         .json({events: events});
+      })
     })
     .catch(err => {
       Server.Logs.error(
@@ -124,12 +140,9 @@ export async function getEvents(
     });
 }
 
-export async function EventBody(e: any) {
+export function EventBody(e: any) {
   let dateObj = new Date(e.time* 1000);
   let utcString = dateObj.toUTCString();
-
-  let media = (await Media.findOne({where: {id: e.media_id}})).dataValues;
-  let size = fs.statSync(media.filepath).size;
 
   return {
     id: e.id,
@@ -138,6 +151,5 @@ export async function EventBody(e: any) {
     mediaUrl: `https://${process.env.BC_HOST}:${process.env.PORT}/media/${e.media_id}`,
     duration: e.length - 3, // TODO: Investigate why times are awlways 3 seconds off
     mode: e.type_id,
-    size: size,
   };
 }

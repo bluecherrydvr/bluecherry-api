@@ -3,7 +3,7 @@ import {Server} from '../../server';
 
 class Media extends Model {}
 
-function Register(): void {
+function Register(sequelize = Server.sequelize): void {
   Media.init(
     {
       archive: DataTypes.BOOLEAN,
@@ -14,7 +14,7 @@ function Register(): void {
       size: DataTypes.BIGINT,
       start: DataTypes.INTEGER,
     },
-    {sequelize: Server.sequelize, modelName: 'Media'}
+    {sequelize: sequelize, modelName: 'Media'}
   );
 }
 
