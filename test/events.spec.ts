@@ -58,8 +58,8 @@ describe('Reading Events', () => {
   test('Cleaning up...', async () => {
     await axios.delete('/test/events');
 
-    let startDate = Date.parse(testEvents[0].date);
-    let endDate = Date.parse(testEvents[14].date);
+    let startDate = testEvents[0].time;
+    let endDate = testEvents[14].time;
 
     const res = await axios.get(
       `/events/?start=${startDate}&end=${endDate}&limit=15`
