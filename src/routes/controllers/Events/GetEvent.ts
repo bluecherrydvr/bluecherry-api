@@ -22,15 +22,15 @@ export async function getEvent(
       Object.keys(event).forEach(function (key) {
         if (event[key] instanceof Buffer) event[key] = `${event[key]}`;
       });
-      
-      Media.findOne({where: { id: event.media_id }}).then(media => {
+
+      Media.findOne({where: {id: event.media_id}}).then(media => {
         let size = fs.statSync(media.dataValues.filepath).size;
 
         res
-        .status(200)
-        .set('Content-Type', 'application/json')
-        .json({events: [{...EventBody(event), size: size}]});
-      })
+          .status(200)
+          .set('Content-Type', 'application/json')
+          .json({events: [{...EventBody(event), size: size}]});
+      });
     })
     .catch(err => {
       Server.Logs.error(
@@ -102,26 +102,31 @@ export async function getEvents(
     .then(async eventArray => {
       let mediaIds = eventArray.map(e => e.dataValues.media_id);
 
-      Media.findAll({where: {
-        id: {
-          [Op.in]: mediaIds
-        }
-      }}).then((mediaArrays) => {
-        
+      Media.findAll({
+        where: {
+          id: {
+            [Op.in]: mediaIds,
+          },
+        },
+      }).then(mediaArrays => {
         let events = eventArray.map(event => {
-          if(event.dataValues.media_id == null)
-            return {...EventBody(event.dataValues),   size: -1 }
-          else{
-            let size = fs.statSync(mediaArrays.find(m => m.dataValues.id == event.dataValues.media_id).dataValues.filepath).size;
-            return {...EventBody(event.dataValues),   size: size }
+          if (event.dataValues.media_id == null)
+            return {...EventBody(event.dataValues), size: -1};
+          else {
+            let size = fs.statSync(
+              mediaArrays.find(
+                m => m.dataValues.id == event.dataValues.media_id
+              ).dataValues.filepath
+            ).size;
+            return {...EventBody(event.dataValues), size: size};
           }
         });
 
         res
-        .status(200)
-        .set('Content-Type', 'application/json')
-        .json({events: events});
-      })
+          .status(200)
+          .set('Content-Type', 'application/json')
+          .json({events: events});
+      });
     })
     .catch(err => {
       Server.Logs.error(
@@ -141,7 +146,7 @@ export async function getEvents(
 }
 
 export function EventBody(e: any) {
-  let dateObj = new Date(e.time* 1000);
+  let dateObj = new Date(e.time * 1000);
   let utcString = dateObj.toUTCString();
 
   return {

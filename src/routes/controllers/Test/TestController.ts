@@ -5,5 +5,4 @@ const api = Router();
 
 api.route('/events').post(createEventTests).delete(deleteEventTests);
 
-
 export = api;

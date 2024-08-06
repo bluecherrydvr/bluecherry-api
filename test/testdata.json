@@ -1,154 +1,154 @@
 {
-    "events": [
-        {
-            "time": 930313476,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 362,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930313838,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930313955,
-            "level_id": "info",
-            "device_id": 3,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930313998,
-            "level_id": "info",
-            "device_id": 5,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930314825,
-            "level_id": "info",
-            "device_id": 17,
-            "type_id": "continuous",
-            "length": 1807,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930315639,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 845,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930315756,
-            "level_id": "info",
-            "device_id": 3,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930315799,
-            "level_id": "info",
-            "device_id": 5,
-            "type_id": "continuous",
-            "length": 1802,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930316485,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 6,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930316491,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 1430,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930316491,
-            "level_id": "info",
-            "device_id": 17,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930317311,
-            "level_id": "warn",
-            "device_id": 5,
-            "type_id": "motion",
-            "length": 31,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930317557,
-            "level_id": "info",
-            "device_id": 3,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930317601,
-            "level_id": "info",
-            "device_id": 5,
-            "type_id": "continuous",
-            "length": 1801,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        },
-        {
-            "time": 930317922,
-            "level_id": "info",
-            "device_id": 16,
-            "type_id": "continuous",
-            "length": 95,
-            "archive": 0,
-            "media_id": null,
-            "details": null
-        }
-    ] 
+  "events": [
+    {
+      "time": 930313476,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 362,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930313838,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930313955,
+      "level_id": "info",
+      "device_id": 3,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930313998,
+      "level_id": "info",
+      "device_id": 5,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930314825,
+      "level_id": "info",
+      "device_id": 17,
+      "type_id": "continuous",
+      "length": 1807,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930315639,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 845,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930315756,
+      "level_id": "info",
+      "device_id": 3,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930315799,
+      "level_id": "info",
+      "device_id": 5,
+      "type_id": "continuous",
+      "length": 1802,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930316485,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 6,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930316491,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 1430,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930316491,
+      "level_id": "info",
+      "device_id": 17,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930317311,
+      "level_id": "warn",
+      "device_id": 5,
+      "type_id": "motion",
+      "length": 31,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930317557,
+      "level_id": "info",
+      "device_id": 3,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930317601,
+      "level_id": "info",
+      "device_id": 5,
+      "type_id": "continuous",
+      "length": 1801,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    },
+    {
+      "time": 930317922,
+      "level_id": "info",
+      "device_id": 16,
+      "type_id": "continuous",
+      "length": 95,
+      "archive": 0,
+      "media_id": null,
+      "details": null
+    }
+  ]
 }
