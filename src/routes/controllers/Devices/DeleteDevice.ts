@@ -41,17 +41,8 @@ export async function deleteDevice(
                 fs.unlink(media.filepath, err => {
                   if (err) {
                     Server.Logs.error(
-                      `An error occured when deleting device of ID ${deviceId} - ${err}`
+                      `An error occured when deleting media belonging to ID ${deviceId} - ${err}`
                     );
-                    res
-                      .status(500)
-                      .send(
-                        new ErrorResponse(
-                          500,
-                          `An error occured when deleting device of ID ${deviceId}! Please report this to the Bluecherry team along with logs`
-                        )
-                      );
-                    return;
                   }
                 });
               });
