@@ -96,7 +96,7 @@ export async function addDevice(
     protocol: data.protocol,
     device: `${data.ipAddress}|${data.rtspPort}|${data.rtspPath}`,
     mjpeg_path: `${data.ipAddress}|${data.mjpegPort}|${data.mjpegPath}`,
-    audio_disabled: data.audio_enabled ? 0 : 1,
+    audio_disabled: data.audioEnabled ? 0 : 1,
     substream_mode: data.substreamMode,
     substream_path: substream_path,
     debug_level: 0,
@@ -108,9 +108,9 @@ export async function addDevice(
     resolutionY: 480,
     rtsp_rtp_prefer_tcp: data.preferTcp,
     onvif_port: data.onvifPort,
-    hls_window_size: data.hls_window_size,
-    hls_segment_duration: data.hls_segment_duration,
-    hls_segment_size: data.hls_segment_size,
+    hls_window_size: data.hlsWindowSize,
+    hls_segment_duration: data.hlsSegmentDuration,
+    hls_segment_size: data.hlsSegmentSize,
   }).then(async device => {
     let d = await Devices.findOne({where: {device: device.dataValues.device}}); //-> Work around because sequalize nulls id
     res.status(200).send(

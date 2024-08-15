@@ -15,10 +15,10 @@ const AddDeviceRequest = Type.Object({
   mjpegPath: Type.Optional(Type.String({default: '/'})),
   mjpegPort: Type.Optional(Type.Number({default: 80})),
   onvifPort: Type.Optional(Type.Number({default: 80})),
-  hls_window_size: Type.Optional(Type.Number({default: 5})),
-  hls_segment_size: Type.Optional(Type.Number({default: 0})),
-  hls_segment_duration: Type.Optional(Type.Number({default: 0})),
-  audio_enabled: Type.Optional(Type.Boolean({default: false})),
+  hlsWindowSize: Type.Optional(Type.Number({default: 5})),
+  hlsSegmentSize: Type.Optional(Type.Number({default: 0})),
+  hlsSegmentDuration: Type.Optional(Type.Number({default: 0})),
+  audioEnabled: Type.Optional(Type.Boolean({default: false})),
 });
 
 export {AddDeviceRequest};
