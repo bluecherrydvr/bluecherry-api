@@ -138,55 +138,55 @@ export async function updateDevice(
         data.preferTcp ?? originalDevice.dataValues.preferTcp,
       onvif_port: data.onvifPort ?? originalDevice.dataValues.onvifPort,
       hls_window_size:
-        data.hls_window_size ?? originalDevice.dataValues.hls_window_size,
+        data.hlsWindowSize ?? originalDevice.dataValues.hlsWindowSize,
       hls_segment_duration:
-        data.hls_segment_duration ??
+        data.hlsSegmentDuration ??
         originalDevice.dataValues.hls_segment_duration,
       hls_segment_size:
-        data.hls_segment_size ?? originalDevice.dataValues.hls_segment_size,
-      audio_volume: data.audio_volume ?? originalDevice.dataValues.audio_volume,
+        data.hlsSegmentSize ?? originalDevice.dataValues.hls_segment_size,
+      audio_volume: data.audioVolume ?? originalDevice.dataValues.audio_volume,
       brightness: data.brightness ?? originalDevice.dataValues.brightness,
       buffer_postrecording:
-        data.buffer_postrecording ??
+        data.bufferPostrecording ??
         originalDevice.dataValues.buffer_postrecording,
       channel: data.channel ?? originalDevice.dataValues.channel,
       contrast: data.contrast ?? originalDevice.dataValues.contrast,
       disabled: data.disabled ?? originalDevice.dataValues.disabled,
       frame_downscale_factor:
-        data.frame_downscale_factor ??
+        data.frameDownscaleFactor ??
         originalDevice.dataValues.frame_downscale_factor,
       invert: data.invert ?? originalDevice.dataValues.invert,
       max_motion_area:
-        data.max_motion_area ?? originalDevice.dataValues.max_motion_area,
+        data.maxMotionArea ?? originalDevice.dataValues.max_motion_area,
       max_motion_frames:
-        data.max_motion_frames ?? originalDevice.dataValues.max_motion_frames,
+        data.maxMotionFrames ?? originalDevice.dataValues.max_motion_frames,
       min_motion_frames:
-        data.min_motion_frames ?? originalDevice.dataValues.min_motion_frames,
+        data.minMotionFrames ?? originalDevice.dataValues.min_motion_frames,
       motion_algorithm:
-        data.motion_algorithm ?? originalDevice.dataValues.motion_algorithm,
+        data.motionAlgorithm ?? originalDevice.dataValues.motion_algorithm,
       motion_analysis_percentage:
-        data.motion_analysis_percentage ??
+        data.motionAnalysisPercentage ??
         originalDevice.dataValues.motion_analysis_percentage,
       motion_analysis_ssw_length:
-        data.motion_analysis_ssw_length ??
+        data.motionAnalysisSswLength ??
         originalDevice.dataValues.motion_analysis_ssw_length,
       motion_blend_ratio:
-        data.motion_blend_ratio ?? originalDevice.dataValues.motion_blend_ratio,
-      motion_debug: data.motion_debug ?? originalDevice.dataValues.motion_debug,
-      // motion_map: Type.Optional(Type.String()), //TODO: Add support for Schedule
+        data.motionBlendRatio ?? originalDevice.dataValues.motion_blend_ratio,
+      motion_debug: data.motionDebug ?? originalDevice.dataValues.motion_debug,
+      // motion_map: Type.Optional(Type.String()), //TODO: Add support for Motion Map
       onvif_events_enabled:
-        data.onvif_events_enabled ??
+        data.onvifEventsEnabled ??
         originalDevice.dataValues.onvif_events_enabled,
       saturation: data.saturation ?? originalDevice.dataValues.saturation,
       // schedule: Type.Optional(Type.String()), //TODO: Add support for Schedule
       schedule_override_global:
-        data.schedule_override_global ??
+        data.scheduleOverrideGlobal ??
         originalDevice.dataValues.schedule_override_global,
-      signal_type: data.signal_type ?? originalDevice.dataValues.signal_type,
+      signal_type: data.signalType ?? originalDevice.dataValues.signal_type,
       video_interval:
-        data.video_interval ?? originalDevice.dataValues.video_interval,
+        data.videoInterval ?? originalDevice.dataValues.video_interval,
       video_quality:
-        data.video_quality ?? originalDevice.dataValues.video_quality,
+        data.videoQuality ?? originalDevice.dataValues.video_quality,
     },
     {where: {id: deviceId}}
   ).then(async () => {

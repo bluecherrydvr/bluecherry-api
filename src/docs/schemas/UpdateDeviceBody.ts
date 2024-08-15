@@ -64,11 +64,11 @@ const updateDeviceBody = {
       type: 'number',
       examples: [80],
     },
-    audio_enabled: {
+    audioEnabled: {
       type: 'boolean',
       examples: [false, true],
     },
-    audio_volume: {
+    audioVolume: {
       type: 'integer',
       examples: [50, 100, 0],
     },
@@ -88,21 +88,21 @@ const updateDeviceBody = {
       type: 'boolean',
       examples: [false, true],
     },
-    frame_downscale_factor: {
+    frameDownscaleFactor: {
       type: 'number',
       format: 'float',
       examples: [0.5, 0.8],
     },
-    hls_segment_duration: {
+    hlsSegmentDuration: {
       type: 'number',
       format: 'float',
       examples: [0.0, 0.1],
     },
-    hls_segment_size: {
+    hlsSegmentSize: {
       type: 'integer',
       examples: [0, 1],
     },
-    hls_window_size: {
+    hlsWindowSize: {
       type: 'integer',
       examples: [5, 7],
     },
@@ -110,39 +110,39 @@ const updateDeviceBody = {
       type: 'boolean',
       examples: [false, true],
     },
-    max_motion_area: {
+    maxMotionArea: {
       type: 'integer',
       examples: [90, 50],
     },
-    max_motion_frames: {
+    maxMotionFrames: {
       type: 'integer',
       examples: [20, 50],
     },
-    min_motion_frames: {
+    minMotionFrames: {
       type: 'integer',
       examples: [15, 30, 60],
     },
-    motion_algorithm: {
+    motionAlgorithm: {
       type: 'boolean',
       examples: [true, false],
     },
-    motion_analysis_percentage: {
+    motionAnalysisPercentage: {
       type: 'integer',
       examples: [-1, 30, 70],
     },
-    motion_analysis_ssw_length: {
+    motionAnalysisSswLength: {
       type: 'integer',
       examples: [-1, 30, 70],
     },
-    motion_blend_ratio: {
+    motionBlendRatio: {
       type: 'integer',
       examples: [15, 30, 60],
     },
-    motion_debug: {
+    motionDebug: {
       type: 'boolean',
       examples: [false, true],
     },
-    onvif_events_enabled: {
+    onvifEventsEnabled: {
       type: 'boolean',
       examples: [false, true],
     },
@@ -150,23 +150,19 @@ const updateDeviceBody = {
       type: 'integer',
       examples: [50, 100, 0],
     },
-    schedule_override_global: {
+    scheduleOverrideGlobal: {
       type: 'boolean',
       examples: [false, true],
     },
-    signal_type: {
+    signalType: {
       type: 'string',
       examples: ['null'],
     },
-    substream_mode: {
-      type: 'boolean',
-      examples: [false, true],
-    },
-    video_interval: {
+    videoInterval: {
       type: 'string',
       examples: ['null'],
     },
-    video_quality: {
+    videoQuality: {
       type: 'integer',
       examples: [100, 50],
     },
