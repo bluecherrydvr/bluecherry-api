@@ -53,6 +53,7 @@ export async function updateDevice(
     substreamPath: poppedSubstream[2],
     mjpegPort: poppedMjpegPath[1],
     mjpegPath: poppedMjpegPath[2],
+    protocol: originalDevice.dataValues.protocol
   };
 
   //-> Check if name exists
@@ -75,11 +76,14 @@ export async function updateDevice(
     }
   }
 
-  if ('protocol' in data) {
+  if ('protocol' in data || 'substreamPath' in data) {
+
+    let protocol = data.protocol ?? oldProps.protocol;
+
     //-> Protocol Check
-    if (data.protocol == 'IP-RTSP') {
+    if (protocol == 'IP-RTSP') {
       substream_path = `${data.ipAddress ?? oldProps.ipAddress}|${data.rtspPort ?? oldProps.rtspPort}|${data.substreamPath ?? oldProps.substreamPath}`;
-    } else if (data.protocol == 'IP-MJPEG') {
+    } else if (protocol == 'IP-MJPEG') {
       data.mjpegPath = !data.rtspPath.startsWith('/')
         ? `/${data.mjpegPath}`
         : data.mjpegPath;
@@ -124,8 +128,8 @@ export async function updateDevice(
       device: `${data.ipAddress ?? oldProps.ipAddress}|${data.rtspPort ?? oldProps.rtspPort}|${data.rtspPath ?? oldProps.rtspPath}`,
       mjpeg_path: `${data.ipAddress ?? oldProps.ipAddress}|${data.mjpegPort ?? oldProps.mjpegPort ?? 80}|${data.mjpegPath ?? oldProps.mjpegPort ?? '/'}`,
       audio_disabled:
-        'audio_enabled' in data
-          ? data.audio_enabled
+        'audioEnabled' in data
+          ? data.audioEnabled
             ? 0
             : 1
           : originalDevice.dataValues.audio_enabled,
