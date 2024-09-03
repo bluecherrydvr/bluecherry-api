@@ -7,8 +7,10 @@ export function LocalOnly(
   res: Response,
   next: NextFunction
 ): void {
-    if(req.ip.includes(process.env.BC_HOST))
+  Server.Logs.trace("Local only connection attempt from: " + req.ip)
+    if(req.ip.includes(process.env.BC_HOST)) {
         next();
+    }
     else
         res.status(401).send('Route not allowed on this connection!');
 }

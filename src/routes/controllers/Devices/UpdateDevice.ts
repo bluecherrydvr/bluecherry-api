@@ -120,6 +120,8 @@ export async function updateDevice(
     }
   }
 
+  let audioDisabled = ('audioEnabled'in data) ? !data.audioEnabled  : originalDevice.dataValues.audio_enabled;
+
   //-> Update device
   Devices.update(
     {
@@ -127,12 +129,7 @@ export async function updateDevice(
       protocol: data.protocol ?? originalDevice.dataValues.protocol,
       device: `${data.ipAddress ?? oldProps.ipAddress}|${data.rtspPort ?? oldProps.rtspPort}|${data.rtspPath ?? oldProps.rtspPath}`,
       mjpeg_path: `${data.ipAddress ?? oldProps.ipAddress}|${data.mjpegPort ?? oldProps.mjpegPort ?? 80}|${data.mjpegPath ?? oldProps.mjpegPort ?? '/'}`,
-      audio_disabled:
-        'audioEnabled' in data
-          ? data.audioEnabled
-            ? 0
-            : 1
-          : originalDevice.dataValues.audio_enabled,
+      audio_disabled: audioDisabled,
       substream_mode:
         data.substreamMode ?? originalDevice.dataValues.substreamMode,
       substream_path: substream_path,
@@ -194,6 +191,6 @@ export async function updateDevice(
     },
     {where: {id: deviceId}}
   ).then(async () => {
-    res.status(200).send(new ErrorResponse(200, 'Updated device sucessfully!'));
+    res.status(200).send(new ErrorResponse(200, 'Updated device sucessfully!', { updatedBody: data }));
   });
 }

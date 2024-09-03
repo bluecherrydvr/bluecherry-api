@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import Axios from 'axios';
-import DemoData from './testdata.json';
+import DemoData from './eventtestdata.json';
 
 const axios = Axios.create({
   baseURL: `http://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.BC_HOST}:${process.env.PORT}`,
