@@ -153,6 +153,7 @@ export function EventBody(e: any) {
     id: e.id,
     deviceId: e.device_id,
     date: utcString,
+    mediaId: e.media_id,
     mediaUrl: `https://${process.env.BC_HOST}:${process.env.PORT}/media/${e.media_id}`,
     duration: e.length - 3, // TODO: Investigate why times are awlways 3 seconds off
     mode: e.type_id,
