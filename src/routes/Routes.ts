@@ -5,7 +5,7 @@ import DevicesController from './controllers/Devices/DevicesController';
 import EventsController from './controllers/Events/EventsController';
 import MediaController from './controllers/Media/MediaController';
 import TestController from './controllers/Test/TestController';
-import { LocalOnly } from '../utils/LocalOnly';
+import {LocalOnly} from '../utils/LocalOnly';
 
 export abstract class Routes {
   public static Register(): void {
@@ -15,4 +15,3 @@ export abstract class Routes {
     Server.App.use('/test', LocalOnly, TestController);
   }
 }
-

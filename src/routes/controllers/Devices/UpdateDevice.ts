@@ -53,7 +53,7 @@ export async function updateDevice(
     substreamPath: poppedSubstream[2],
     mjpegPort: poppedMjpegPath[1],
     mjpegPath: poppedMjpegPath[2],
-    protocol: originalDevice.dataValues.protocol
+    protocol: originalDevice.dataValues.protocol,
   };
 
   //-> Check if name exists
@@ -77,7 +77,6 @@ export async function updateDevice(
   }
 
   if ('protocol' in data || 'substreamPath' in data) {
-
     let protocol = data.protocol ?? oldProps.protocol;
 
     //-> Protocol Check
@@ -120,7 +119,10 @@ export async function updateDevice(
     }
   }
 
-  let audioDisabled = ('audioEnabled'in data) ? !data.audioEnabled  : originalDevice.dataValues.audio_enabled;
+  let audioDisabled =
+    'audioEnabled' in data
+      ? !data.audioEnabled
+      : originalDevice.dataValues.audio_enabled;
 
   //-> Update device
   Devices.update(
@@ -191,6 +193,10 @@ export async function updateDevice(
     },
     {where: {id: deviceId}}
   ).then(async () => {
-    res.status(200).send(new ErrorResponse(200, 'Updated device sucessfully!', { updatedBody: data }));
+    res.status(200).send(
+      new ErrorResponse(200, 'Updated device sucessfully!', {
+        updatedBody: data,
+      })
+    );
   });
 }

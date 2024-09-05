@@ -8,9 +8,11 @@ const axios = Axios.create({
 
 describe('Reading Media', () => {
   test('GET /media/ with media id', async () => {
-        const event = (await axios.get('/events')).data.events[0];
-        const res = await axios.get(`/media/${event.mediaId}`)
-        expect(res.status).toBe(200);
-        expect(Number(res.headers['content-duration'].replaceAll(":", ""))).toBeGreaterThan(0);
+    const event = (await axios.get('/events')).data.events[0];
+    const res = await axios.get(`/media/${event.mediaId}`);
+    expect(res.status).toBe(200);
+    expect(
+      Number(res.headers['content-duration'].replaceAll(':', ''))
+    ).toBeGreaterThan(0);
   });
 });

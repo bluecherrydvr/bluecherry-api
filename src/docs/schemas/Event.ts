@@ -13,7 +13,8 @@ const event = {
     mediaId: {
       type: 'number',
       examples: [123, 678],
-      description: 'The ID of the media file - This can be used on the `/media/:id` route to retrive the media file'
+      description:
+        'The ID of the media file - This can be used on the `/media/:id` route to retrive the media file',
     },
     mediaUrl: {
       type: 'string',
