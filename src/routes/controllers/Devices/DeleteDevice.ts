@@ -26,36 +26,59 @@ export async function deleteDevice(
         return;
       }
       try {
-        Server.sequelize.query(`DELETE FROM EventsCam WHERE device_id='${id}'`);
-        Server.sequelize.query(
-          `DELETE FROM OnvifEvents WHERE device_id='${id}'`
-        );
         Server.sequelize
-          .query(
-            `SELECT id, filepath FROM Media WHERE device_id='${id}' ORDER BY id DESC`
-          )
-          .then((result: [any, any]) => {
-            if (result[0].length > 0) {
-              let highestId = result[0][0].id;
-              result[0].forEach((media: any) => {
-                fs.unlink(media.filepath, err => {
-                  if (err) {
-                    Server.Logs.error(
-                      `An error occured when deleting media belonging to ID ${deviceId} - ${err}`
-                    );
-                  }
-                });
+          .query(`DELETE FROM EventsCam WHERE device_id='${id}'`)
+          .then(() => {
+            Server.sequelize
+              .query(`DELETE FROM OnvifEvents WHERE device_id='${id}'`)
+              .then(() => {
+                Server.sequelize
+                  .query(
+                    `SELECT id, filepath FROM Media WHERE device_id='${id}' ORDER BY id DESC`
+                  )
+                  .then((result: [any, any]) => {
+                    if (result[0].length > 0) {
+                      let highestId = result[0][0].id;
+                      result[0].forEach((media: any) => {
+                        fs.unlink(media.filepath, err => {
+                          if (err) {
+                            Server.Logs.error(
+                              `An error occured when deleting media belonging to ID ${deviceId} - ${err}`
+                            );
+                          }
+                        });
+                      });
+                      try {
+                        Server.sequelize
+                          .query(
+                            `DELETE FROM Media WHERE device_id='${id}' AND id <= ${highestId}`
+                          )
+                          .then(() => {
+                            device.destroy();
+                            res
+                              .status(200)
+                              .send(
+                                new ErrorResponse(
+                                  200,
+                                  'Deleted device sucessfully!'
+                                )
+                              );
+                            return;
+                          });
+                      } catch (err) {
+                        res
+                          .status(500)
+                          .send(
+                            new ErrorResponse(
+                              500,
+                              `Failed to deleted the device of ID ${deviceId}! Please report this to the Bluecherry team along with logs`
+                            )
+                          );
+                      }
+                    }
+                  });
               });
-              Server.sequelize.query(
-                `DELETE FROM Media WHERE device_id='${id}' AND id <= ${highestId}`
-              );
-            }
           });
-        device.destroy();
-        res
-          .status(200)
-          .send(new ErrorResponse(200, 'Deleted device sucessfully!'));
-        return;
       } catch (err) {
         Server.Logs.error(
           `An error occured when deleting device of ID ${deviceId} - ${err}`

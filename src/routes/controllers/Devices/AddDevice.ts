@@ -112,7 +112,9 @@ export async function addDevice(
     hls_segment_duration: data.hlsSegmentDuration,
     hls_segment_size: data.hlsSegmentSize,
   }).then(async device => {
-    let d = await Devices.findOne({where: {device: device.dataValues.device}}); //-> Work around because sequalize nulls id
+    let d = await Devices.findOne({
+      where: {device: device.dataValues.device},
+    }); //-> Work around because sequalize nulls id
     res.status(200).send(
       new ErrorResponse(200, 'Created device sucessfully!', {
         deviceId: d.dataValues.id,
