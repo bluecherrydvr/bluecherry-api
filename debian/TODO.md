@@ -1,0 +1,5 @@
+- [ ] Extract to /usr/share/bluecherry/api
+- [ ] Share configuration from /etc/bluecherry.conf to access database
+- [ ] Generate a random API password (secure!) and pass that to the user
+- [ ] Setup nginx redirect for /api to :4000
+- [ ] Succeed
