@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+# Stop and disable service
+systemctl stop bluecherry-api
+systemctl disable bluecherry-api
+
+exit 0
