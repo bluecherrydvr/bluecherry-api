@@ -1,0 +1,22 @@
+!/bin/bash
+set -e
+
+# Create bluecherry user if it doesn't exist
+#if ! getent passwd bluecherry > /dev/null; then
+#    adduser --system --group --home /var/lib/bluecherry bluecherry
+#fi
+
+# Install node dependencies
+cd /usr/share/bluecherry/api
+npm install --production
+
+# Set permissions
+chown -R bluecherry:bluecherry /usr/share/bluecherry/api
+#chown -R bluecherry:bluecherry /etc/bluecherry-api
+
+# Enable and start service
+systemctl daemon-reload
+systemctl enable bluecherry-api
+systemctl start bluecherry-api
+
+exit 0
