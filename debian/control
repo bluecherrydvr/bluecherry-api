@@ -1,0 +1,9 @@
+Package: bluecherry-api
+Version: 0.3.6
+Section: web
+Priority: optional
+Architecture: all
+Depends: nodejs (>= 16.0.0), npm
+Maintainer: Bluecherry Team <support@bluecherrydvr.com>
+Description: The API for Bluecherry DVR
+ This package provides the REST API backend for the Bluecherry DVR system.
