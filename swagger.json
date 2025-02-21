@@ -1,312 +1,196 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "version": "0.3.6",
-    "title": "Bluecherry Server API",
-    "description": "The Bluecherry Server API allows users to use software to create custom intergrations with Blucherry DVR",
-    "contact": {
-      "name": "Bluecherry Team",
-      "email": "support@bluecherrydvr.com",
-      "url": "https://github.com/bluecherrydvr/"
-    },
-    "license": {
-      "name": "AGPL-2.0",
-      "url": "https://github.com/bluecherrydvr/bluecherry-api/blob/master/LICENSE"
-    }
-  },
-  "servers": [
-    {
-      "url": "http://localhost:4000/",
-      "description": "Blucherry Server"
-    }
-  ],
-  "paths": {
-    "/devices": {
-      "post": {
-        "tags": ["Devices"],
-        "summary": "Add a new device",
-        "operationId": "addDevice",
-        "security": [{"basicAuth": []}],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/addDeviceBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Device created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deviceId": {"type": "integer"}
-                  }
-                }
-              }
-            }
-          },
-          "400": {"description": "Invalid request body"},
-          "409": {"description": "Device already exists"}
-        }
-      }
-    },
-    "/devices/{format}": {
-      "get": {
-        "tags": ["Devices"],
-        "summary": "Get all devices",
-        "operationId": "getDevices",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "format",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": ["json", "xml"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of devices",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "devices": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/device"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/devices/{deviceId}/{format}": {
-      "get": {
-        "tags": ["Devices"],
-        "summary": "Get a specific device",
-        "operationId": "getDevice",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "deviceId",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "integer"}
-          },
-          {
-            "name": "format",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": ["json", "xml"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Device information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/device"
-                }
-              }
-            }
-          },
-          "404": {"description": "Device not found"}
-        }
-      }
-    },
-    "/devices/{deviceId}": {
-      "delete": {
-        "tags": ["Devices"],
-        "summary": "Delete a device",
-        "operationId": "deleteDevice",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "deviceId",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "integer"}
-          }
-        ],
-        "responses": {
-          "200": {"description": "Device deleted successfully"},
-          "404": {"description": "Device not found"}
-        }
-      },
-      "put": {
-        "tags": ["Devices"],
-        "summary": "Update a device",
-        "operationId": "updateDevice",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "deviceId",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "integer"}
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/updateDeviceBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {"description": "Device updated successfully"},
-          "400": {"description": "Invalid request body"},
-          "404": {"description": "Device not found"},
-          "409": {"description": "Device with same name already exists"}
-        }
-      }
-    },
-    "/events/": {
-      "get": {
-        "tags": ["Events"],
-        "summary": "Get all events",
-        "operationId": "getEvents",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {"type": "integer"}
-          },
-          {
-            "name": "device",
-            "in": "query",
-            "schema": {"type": "integer"}
-          },
-          {
-            "name": "start",
-            "in": "query",
-            "schema": {"type": "integer"}
-          },
-          {
-            "name": "end",
-            "in": "query",
-            "schema": {"type": "integer"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of events",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "events": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/event"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/events/{eventId}": {
-      "get": {
-        "tags": ["Events"],
-        "summary": "Get a specific event",
-        "operationId": "getEvent",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "eventId",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "integer"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Event information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/event"
-                }
-              }
-            }
-          },
-          "404": {"description": "Event not found"}
-        }
-      }
-    },
-    "/media/{mediaId}": {
-      "get": {
-        "tags": ["Media"],
-        "summary": "Get media file",
-        "operationId": "getMedia",
-        "security": [{"basicAuth": []}],
-        "parameters": [
-          {
-            "name": "mediaId",
-            "in": "path",
-            "required": true,
-            "schema": {"type": "integer"}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Media file",
-            "content": {
-              "video/mp4": {
-                "schema": {
-                  "type": "string",
-                  "format": "binary"
-                }
-              }
-            },
-            "headers": {
-              "Content-Duration": {
-                "schema": {
-                  "type": "string",
-                  "description": "Video duration in format HH:MM:SS"
-                }
-              }
-            }
-          },
-          "404": {"description": "Media not found"}
-        }
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "basicAuth": {
-        "type": "http",
-        "scheme": "basic"
-      }
-    }
-  }
-}
+openapi: '3.0.0'
+info:
+  version: '0.3.6'
+  title: 'Bluecherry Server API'
+  description: 'The Bluecherry Server API allows users to use software to create custom integrations with Bluecherry DVR'
+  contact:
+    name: 'Bluecherry Team'
+    email: 'support@bluecherrydvr.com'
+    url: 'https://github.com/bluecherrydvr/'
+  license:
+    name: 'AGPL-2.0'
+    url: 'https://github.com/bluecherrydvr/bluecherry-api/blob/master/LICENSE'
+
+servers:
+  - url: 'http://localhost:4000'
+    description: 'Bluecherry Server'
+
+tags:
+  - name: 'Devices'
+  - name: 'Events'
+
+paths:
+  /devices:
+    post:
+      tags:
+        - 'Devices'
+      summary: 'Add a new device'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddDeviceRequest'
+      responses:
+        '200':
+          description: 'Device created successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    
+    get:
+      tags:
+        - 'Devices'
+      summary: 'Get all devices'
+      responses:
+        '200':
+          description: 'List of devices'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+
+  /devices/{deviceId}:
+    delete:
+      tags:
+        - 'Devices'
+      summary: 'Delete a device'
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Device deleted successfully'
+
+    put:
+      tags:
+        - 'Devices'
+      summary: 'Update a device'
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDeviceRequest'
+      responses:
+        '200':
+          description: 'Device updated successfully'
+
+components:
+  schemas:
+    AddDeviceRequest:
+      type: object
+      required:
+        - camName
+        - ipAddr
+        - username
+        - password
+        - protocol
+        - rtspPath
+        - substream
+        - substreamPath
+        - rtspPort
+        - preferTcp
+      properties:
+        camName:
+          type: string
+          example: 'Back Door'
+        ipAddr:
+          type: string
+          example: '192.168.255.255'
+        username:
+          type: string
+          description: 'The username used to access the camera'
+          example: 'Admin'
+        password:
+          type: string
+          format: password
+          description: 'The password used to access the camera'
+        protocol:
+          type: string
+          description: 'The protocol to be used to access this camera. Can only be "IP-RTSP" or "IP-MJPEG"'
+          enum: ['IP-RTSP', 'IP-MJPEG']
+        rtspPath:
+          type: string
+          example: '/'
+        substreamPath:
+          type: string
+          example: '/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif'
+        rtspPort:
+          type: integer
+          example: 554
+        preferTcp:
+          type: boolean
+          example: true
+
+    UpdateDeviceRequest:
+      type: object
+      properties:
+        camName:
+          type: string
+          example: 'Back Door'
+        ipAddr:
+          type: string
+          example: '192.168.255.255'
+        username:
+          type: string
+          example: 'Admin'
+        password:
+          type: string
+          format: password
+        protocol:
+          type: string
+          enum: ['IP-RTSP', 'IP-MJPEG']
+
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 14
+        device_name:
+          type: string
+          example: 'Back Door'
+        protocol:
+          type: string
+          example: 'IP-RTSP'
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 11
+        date:
+          type: string
+          format: date-time
+          description: 'The date the event occurred'
+        mediaId:
+          type: integer
+          description: 'The ID of the media file'
+        mediaUrl:
+          type: string
+          description: 'URL pointing towards the media file'
+        duration:
+          type: integer
+          description: 'The length of the media file in seconds'
+        size:
+          type: integer
+          description: 'Size of the media file in bytes'
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
