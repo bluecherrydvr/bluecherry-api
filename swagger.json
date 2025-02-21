@@ -1,196 +1,494 @@
-openapi: '3.0.0'
-info:
-  version: '0.3.6'
-  title: 'Bluecherry Server API'
-  description: 'The Bluecherry Server API allows users to use software to create custom integrations with Bluecherry DVR'
-  contact:
-    name: 'Bluecherry Team'
-    email: 'support@bluecherrydvr.com'
-    url: 'https://github.com/bluecherrydvr/'
-  license:
-    name: 'AGPL-2.0'
-    url: 'https://github.com/bluecherrydvr/bluecherry-api/blob/master/LICENSE'
-
-servers:
-  - url: 'http://localhost:4000'
-    description: 'Bluecherry Server'
-
-tags:
-  - name: 'Devices'
-  - name: 'Events'
-
-paths:
-  /devices:
-    post:
-      tags:
-        - 'Devices'
-      summary: 'Add a new device'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddDeviceRequest'
-      responses:
-        '200':
-          description: 'Device created successfully'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Device'
-    
-    get:
-      tags:
-        - 'Devices'
-      summary: 'Get all devices'
-      responses:
-        '200':
-          description: 'List of devices'
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Device'
-
-  /devices/{deviceId}:
-    delete:
-      tags:
-        - 'Devices'
-      summary: 'Delete a device'
-      parameters:
-        - name: deviceId
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: 'Device deleted successfully'
-
-    put:
-      tags:
-        - 'Devices'
-      summary: 'Update a device'
-      parameters:
-        - name: deviceId
-          in: path
-          required: true
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateDeviceRequest'
-      responses:
-        '200':
-          description: 'Device updated successfully'
-
-components:
-  schemas:
-    AddDeviceRequest:
-      type: object
-      required:
-        - camName
-        - ipAddr
-        - username
-        - password
-        - protocol
-        - rtspPath
-        - substream
-        - substreamPath
-        - rtspPort
-        - preferTcp
-      properties:
-        camName:
-          type: string
-          example: 'Back Door'
-        ipAddr:
-          type: string
-          example: '192.168.255.255'
-        username:
-          type: string
-          description: 'The username used to access the camera'
-          example: 'Admin'
-        password:
-          type: string
-          format: password
-          description: 'The password used to access the camera'
-        protocol:
-          type: string
-          description: 'The protocol to be used to access this camera. Can only be "IP-RTSP" or "IP-MJPEG"'
-          enum: ['IP-RTSP', 'IP-MJPEG']
-        rtspPath:
-          type: string
-          example: '/'
-        substreamPath:
-          type: string
-          example: '/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif'
-        rtspPort:
-          type: integer
-          example: 554
-        preferTcp:
-          type: boolean
-          example: true
-
-    UpdateDeviceRequest:
-      type: object
-      properties:
-        camName:
-          type: string
-          example: 'Back Door'
-        ipAddr:
-          type: string
-          example: '192.168.255.255'
-        username:
-          type: string
-          example: 'Admin'
-        password:
-          type: string
-          format: password
-        protocol:
-          type: string
-          enum: ['IP-RTSP', 'IP-MJPEG']
-
-    Device:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 14
-        device_name:
-          type: string
-          example: 'Back Door'
-        protocol:
-          type: string
-          example: 'IP-RTSP'
-
-    Event:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 11
-        date:
-          type: string
-          format: date-time
-          description: 'The date the event occurred'
-        mediaId:
-          type: integer
-          description: 'The ID of the media file'
-        mediaUrl:
-          type: string
-          description: 'URL pointing towards the media file'
-        duration:
-          type: integer
-          description: 'The length of the media file in seconds'
-        size:
-          type: integer
-          description: 'Size of the media file in bytes'
-
-  securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.3.6",
+    "title": "Bluecherry Server API",
+    "description": "The Bluecherry Server API allows users to use software to create custom integrations with Bluecherry DVR",
+    "contact": {
+      "name": "Bluecherry Team",
+      "email": "support@bluecherrydvr.com",
+      "url": "https://github.com/bluecherrydvr/"
+    },
+    "license": {
+      "name": "AGPL-2.0",
+      "url": "https://github.com/bluecherrydvr/bluecherry-api/blob/master/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/",
+      "description": "Bluecherry Server"
+    }
+  ],
+  "tags": [
+    {"name": "Devices"},
+    {"name": "Events"},
+    {"name": "Media"}
+  ],
+  "paths": {
+    "/devices": {
+      "post": {
+        "tags": ["Devices"],
+        "summary": "Add a new device",
+        "operationId": "addDevice",
+        "security": [{"basicAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/addDeviceBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Device created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {"type": "number"},
+                    "message": {"type": "string"}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    },
+    "/devices/{format}": {
+      "get": {
+        "tags": ["Devices"],
+        "summary": "Get all devices",
+        "operationId": "getDevices",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "format",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["json", "xml"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of devices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/device"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/{deviceId}/{format}": {
+      "get": {
+        "tags": ["Devices"],
+        "summary": "Get a specific device",
+        "operationId": "getDevice",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          },
+          {
+            "name": "format",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["json", "xml"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/device"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found"
+          }
+        }
+      }
+    },
+    "/devices/{deviceId}": {
+      "delete": {
+        "tags": ["Devices"],
+        "summary": "Delete a device",
+        "operationId": "deleteDevice",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device deleted successfully"
+          },
+          "404": {
+            "description": "Device not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Devices"],
+        "summary": "Update a device",
+        "operationId": "updateDevice",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateDeviceBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Device updated successfully"
+          },
+          "404": {
+            "description": "Device not found"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get all events",
+        "operationId": "getEvents",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer"}
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer"}
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer"}
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": false,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/event"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get a specific event",
+        "operationId": "getEvent",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Event information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/media/{mediaId}": {
+      "get": {
+        "tags": ["Media"],
+        "summary": "Get media file",
+        "operationId": "getMedia",
+        "security": [{"basicAuth": []}],
+        "parameters": [
+          {
+            "name": "mediaId",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "integer"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Media file",
+            "content": {
+              "video/mp4": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Media not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    },
+    "schemas": {
+      "addDeviceBody": {
+        "type": "object",
+        "required": [
+          "camName",
+          "ipAddr",
+          "username",
+          "password",
+          "protocol",
+          "rtspPath",
+          "substream",
+          "substreamPath",
+          "rtspPort",
+          "preferTcp"
+        ],
+        "properties": {
+          "camName": {
+            "type": "string",
+            "examples": ["Back Door", "Pool"]
+          },
+          "ipAddress": {
+            "type": "string",
+            "examples": ["192.168.255.255", "10.2.5.255"]
+          },
+          "username": {
+            "type": "string",
+            "description": "The username used to access the camera",
+            "examples": ["Admin"]
+          },
+          "password": {
+            "type": "string",
+            "description": "The password used to access the camera",
+            "format": "password",
+            "examples": ["Bluech3rryAdm!n_"]
+          },
+          "protocol": {
+            "type": "string",
+            "description": "The protocol to be used to access this camera. Can only be \"IP-RTSP\" or \"IP-MJPEG\"",
+            "examples": ["IP-RTSP", "IP-MJPEG"]
+          },
+          "rtspPath": {
+            "type": "string",
+            "examples": ["/"]
+          },
+          "substreamPath": {
+            "type": "string",
+            "examples": ["/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif"]
+          },
+          "rtspPort": {
+            "type": "integer",
+            "examples": [80, 554]
+          },
+          "preferTcp": {
+            "type": "boolean",
+            "examples": [true, false]
+          },
+          "substreamMode": {
+            "type": "integer",
+            "examples": [0]
+          },
+          "model": {
+            "type": "string",
+            "examples": ["Generic", "Lorex"]
+          },
+          "mjpegPath": {
+            "type": "string",
+            "examples": ["/"]
+          },
+          "mjpegPort": {
+            "type": "integer",
+            "examples": [554, 80]
+          },
+          "onvifPort": {
+            "type": "integer",
+            "examples": [80]
+          },
+          "hlsWindowSize": {
+            "type": "integer",
+            "examples": [5]
+          },
+          "hlsSegmentSize": {
+            "type": "integer"
+          },
+          "hlsSegmentDuration": {
+            "type": "number"
+          },
+          "audioEnabled": {
+            "type": "boolean",
+            "examples": [false, true]
+          }
+        }
+      },
+      "updateDeviceBody": {
+        "type": "object",
+        "properties": {
+          "camName": {"type": "string"},
+          "ipAddress": {"type": "string"},
+          "username": {"type": "string"},
+          "password": {"type": "string"},
+          "protocol": {"type": "string"},
+          "rtspPath": {"type": "string"},
+          "substreamPath": {"type": "string"},
+          "rtspPort": {"type": "integer"},
+          "preferTcp": {"type": "boolean"},
+          "substreamMode": {"type": "boolean"},
+          "model": {"type": "string"},
+          "mjpegPath": {"type": "string"},
+          "mjpegPort": {"type": "integer"},
+          "onvifPort": {"type": "integer"},
+          "audioEnabled": {"type": "boolean"},
+          "audioVolume": {"type": "integer"},
+          "brightness": {"type": "integer"},
+          "contrast": {"type": "integer"},
+          "disabled": {"type": "boolean"},
+          "frameDownscaleFactor": {"type": "number"},
+          "hlsSegmentDuration": {"type": "number"},
+          "hlsSegmentSize": {"type": "integer"},
+          "hlsWindowSize": {"type": "integer"},
+          "invert": {"type": "boolean"},
+          "maxMotionArea": {"type": "integer"},
+          "maxMotionFrames": {"type": "integer"},
+          "minMotionFrames": {"type": "integer"},
+          "motionAlgorithm": {"type": "boolean"},
+          "motionAnalysisPercentage": {"type": "integer"},
+          "motionAnalysisSswLength": {"type": "integer"},
+          "motionBlendRatio": {"type": "integer"},
+          "motionDebug": {"type": "boolean"},
+          "onvifEventsEnabled": {"type": "boolean"},
+          "saturation": {"type": "integer"},
+          "scheduleOverrideGlobal": {"type": "boolean"},
+          "signalType": {"type": "string"},
+          "videoInterval": {"type": "string"},
+          "videoQuality": {"type": "integer"}
+        }
+      },
+      "device": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "device_name": {"type": "string"},
+          "protocol": {"type": "string"},
+          "device": {"type": "string"},
+          "rtsp_username": {"type": "string"},
+          "rtsp_password": {"type": "string"},
+          "disabled": {"type": "boolean"},
+          "audio_disabled": {"type": "boolean"},
+          "audio_volume": {"type": "integer"},
+          "brightness": {"type": "integer"},
+          "contrast": {"type": "integer"},
+          "saturation": {"type": "integer"},
+          "hue": {"type": "integer"},
+          "debug_level": {"type": "integer"},
+          "frame_downscale_factor": {"type": "number"},
+          "motion_algorithm": {"type": "boolean"},
+          "motion_debug": {"type": "boolean"},
+          "motion_map": {"type": "string"},
+          "onvif_events_enabled": {"type": "boolean"},
+          "onvif_port": {"type": "integer"},
+          "schedule": {"type": "string"},
+          "schedule_override_global": {"type": "boolean"}
+        }
+      },
+      "event": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "integer"},
+          "time": {"type": "integer"},
+          "level_id": {"type": "string"},
+          "device_id": {"type": "integer"},
+          "type_id": {"type": "string"},
+          "length": {"type": "integer"},
+          "archive": {"type": "boolean"},
+          "media_id": {"type": "integer"},
+          "details": {"type": "string"}
+        }
+      }
+    }
+  }
+}
