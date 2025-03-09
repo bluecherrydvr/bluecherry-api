@@ -58,6 +58,16 @@ function Register(sequelize = Server.sequelize): void {
         type: DataTypes.STRING,
         allowNull: true
       },
+      ptz_patterns: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: '[]'  // Stores pattern definitions as JSON
+      },
+      ptz_tours: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        defaultValue: '[]'  // Stores tour definitions as JSON
+      },
       reencode_bitrate: DataTypes.INTEGER,
       reencode_frame_height: DataTypes.SMALLINT,
       reencode_frame_width: DataTypes.SMALLINT,
