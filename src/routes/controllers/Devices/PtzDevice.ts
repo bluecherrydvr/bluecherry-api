@@ -33,17 +33,20 @@ export async function ptzContinuous(
 ): Promise<void> {
     try {
         const deviceId = parseInt(req.params.deviceId);
-        const {direction, duration} = req.body;
+        const {direction, duration, speed} = req.body; // Add speed parameter
         const cam: any = await getCamera(deviceId);
+
+        // Normalize speed between 0 and 1
+        const normalizedSpeed = Math.min(Math.max(speed || 0.5, 0), 1);
 
         let velocity = {x: 0.0, y: 0.0, zoom: 0.0};
         switch (direction) {
-            case 'up': velocity.y = 0.5; break;
-            case 'down': velocity.y = -0.5; break;
-            case 'left': velocity.x = -0.5; break;
-            case 'right': velocity.x = 0.5; break;
-            case 'zoom_in': velocity.zoom = 0.5; break;
-            case 'zoom_out': velocity.zoom = -0.5; break;
+            case 'up': velocity.y = normalizedSpeed; break;
+            case 'down': velocity.y = -normalizedSpeed; break;
+            case 'left': velocity.x = -normalizedSpeed; break;
+            case 'right': velocity.x = normalizedSpeed; break;
+            case 'zoom_in': velocity.zoom = normalizedSpeed; break;
+            case 'zoom_out': velocity.zoom = -normalizedSpeed; break;
             default: 
                 res.status(400).send(new ErrorResponse(400, 'Invalid direction'));
                 return;
@@ -55,7 +58,8 @@ export async function ptzContinuous(
             Server.Logs.debug(`Stopped movement after ${duration} seconds.`);
         }, (duration || 3) * 1000);
 
-        res.status(200).send(new ErrorResponse(200, `Moving ${direction} for ${duration || 3} seconds`));
+        res.status(200).send(new ErrorResponse(200, 
+            `Moving ${direction} at speed ${normalizedSpeed} for ${duration || 3} seconds`));
     } catch (error) {
         Server.Logs.error(`PTZ Move failed: ${error}`);
         res.status(500).send(new ErrorResponse(500, 'PTZ Move failed'));
@@ -94,6 +98,41 @@ export async function ptzStop(
     } catch (error) {
         Server.Logs.error(`Failed to stop PTZ movement: ${error}`);
         res.status(500).send(new ErrorResponse(500, 'Failed to stop PTZ movement'));
+    }
+}
+
+export async function ptzRelative(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const {x, y, zoom} = req.body;
+        const cam: any = await getCamera(deviceId);
+        
+        // Get current position
+        const status = await new Promise((resolve, reject) => {
+            cam.getStatus((err, status) => {
+                if (err) reject(err);
+                else resolve(status);
+            });
+        });
+
+        // Calculate new position
+        const newPosition = {
+            x: status.position.x + (x || 0),
+            y: status.position.y + (y || 0),
+            zoom: status.position.zoom + (zoom || 0)
+        };
+        
+        // Move to new position
+        cam.absoluteMove(newPosition);
+        res.status(200).send(new ErrorResponse(200, 
+            `Moved relatively by X=${x}, Y=${y}, Zoom=${zoom}`));
+    } catch (error) {
+        Server.Logs.error(`PTZ Relative Move failed: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'PTZ Relative Move failed'));
     }
 }
 
