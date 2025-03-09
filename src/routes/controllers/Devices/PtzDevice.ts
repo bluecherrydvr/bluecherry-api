@@ -224,3 +224,60 @@ export async function setPreset(
         res.status(500).send(new ErrorResponse(500, 'Failed to set preset'));
     }
 }
+
+
+export async function recordPattern(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const {patternName, movements} = req.body;
+        const device = await Devices.findOne({where: {id: deviceId}});
+        
+        // Save pattern to database
+        const patterns = JSON.parse(device.dataValues.ptz_patterns || '[]');
+        patterns.push({
+            name: patternName,
+            movements: movements
+        });
+        
+        await Devices.update(
+            { ptz_patterns: JSON.stringify(patterns) },
+            { where: { id: deviceId } }
+        );
+
+        res.status(200).send({message: 'Pattern recorded successfully'});
+    } catch (error) {
+        Server.Logs.error(`Failed to record pattern: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'Failed to record pattern'));
+    }
+}
+
+export async function runPattern(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const {patternName} = req.body;
+        const device = await Devices.findOne({where: {id: deviceId}});
+        const patterns = JSON.parse(device.dataValues.ptz_patterns || '[]');
+        const pattern = patterns.find(p => p.name === patternName);
+        
+        const cam: any = await getCamera(deviceId);
+        
+        // Execute pattern movements sequentially
+        for (const movement of pattern.movements) {
+            await cam.absoluteMove(movement);
+            await new Promise(resolve => setTimeout(resolve, movement.duration));
+        }
+
+        res.status(200).send({message: 'Pattern executed successfully'});
+    } catch (error) {
+        Server.Logs.error(`Failed to run pattern: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'Failed to run pattern'));
+    }
+}
