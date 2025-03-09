@@ -96,3 +96,92 @@ export async function ptzStop(
         res.status(500).send(new ErrorResponse(500, 'Failed to stop PTZ movement'));
     }
 }
+
+export async function getPtzPresets(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const cam: any = await getCamera(deviceId);
+        
+        // Get presets from camera
+        const presets = await new Promise((resolve, reject) => {
+            cam.getPresets({}, (err, presets) => {
+                if (err) reject(err);
+                else resolve(presets);
+            });
+        });
+
+        // Update presets in database
+        await Devices.update(
+            { ptz_presets: JSON.stringify(presets) },
+            { where: { id: deviceId } }
+        );
+
+        res.status(200).send({ presets });
+    } catch (error) {
+        Server.Logs.error(`Failed to get PTZ presets: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'Failed to get PTZ presets'));
+    }
+}
+
+export async function gotoPreset(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const presetToken = req.body.presetToken;
+        const cam: any = await getCamera(deviceId);
+        
+        // Go to preset
+        await new Promise((resolve, reject) => {
+            cam.gotoPreset({ preset: presetToken }, (err) => {
+                if (err) reject(err);
+                else resolve(true);
+            });
+        });
+
+        res.status(200).send(new ErrorResponse(200, 'Moved to preset position'));
+    } catch (error) {
+        Server.Logs.error(`Failed to go to preset: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'Failed to go to preset'));
+    }
+}
+
+export async function setPreset(
+    req: Request,
+    res: Response,
+    next: NextFunction
+): Promise<void> {
+    try {
+        const deviceId = parseInt(req.params.deviceId);
+        const presetName = req.body.presetName;
+        const cam: any = await getCamera(deviceId);
+        
+        // Set new preset
+        const preset = await new Promise((resolve, reject) => {
+            cam.setPreset({ presetName }, (err, preset) => {
+                if (err) reject(err);
+                else resolve(preset);
+            });
+        });
+
+        // Update presets in database
+        const device = await Devices.findOne({ where: { id: deviceId } });
+        const presets = JSON.parse(device.dataValues.ptz_presets || '[]');
+        presets.push(preset);
+        await Devices.update(
+            { ptz_presets: JSON.stringify(presets) },
+            { where: { id: deviceId } }
+        );
+
+        res.status(200).send({ preset });
+    } catch (error) {
+        Server.Logs.error(`Failed to set preset: ${error}`);
+        res.status(500).send(new ErrorResponse(500, 'Failed to set preset'));
+    }
+}
