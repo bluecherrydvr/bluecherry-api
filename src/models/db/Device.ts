@@ -43,6 +43,21 @@ function Register(sequelize = Server.sequelize): void {
       ptz_control_path: DataTypes.STRING,
       ptz_control_protocol: DataTypes.STRING,
       ptz_serial_values: DataTypes.STRING,
+      // PTZ-related fields
+      ptz_enabled: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      ptz_presets: {
+        type: DataTypes.TEXT,  // Store presets as JSON string
+        allowNull: true,
+        defaultValue: '[]'
+      },
+      ptz_home_preset: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       reencode_bitrate: DataTypes.INTEGER,
       reencode_frame_height: DataTypes.SMALLINT,
       reencode_frame_width: DataTypes.SMALLINT,
