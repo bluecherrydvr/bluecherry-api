@@ -29,6 +29,7 @@
     "express": "^4.19.2",
     "log4js": "^6.9.1",
     "mysql2": "^3.10.0",
+    "onvif": "^0.8.0",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",
     "swagger-jsdoc": "^6.2.8",

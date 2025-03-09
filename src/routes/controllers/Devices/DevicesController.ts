@@ -3,14 +3,16 @@ import {addDevice} from './AddDevice';
 import {deleteDevice} from './DeleteDevice';
 import {getDevice, getDevices} from './GetDevice';
 import {updateDevice} from './UpdateDevice';
-import {ptzContinuous, ptzAbsolute, ptzStop} from './PtzDevice';
 import {
     ptzContinuous, 
     ptzAbsolute, 
     ptzStop,
     getPtzPresets,
     gotoPreset,
-    setPreset
+    setPreset,
+    ptzRelative,    
+    recordPattern,  
+    runPattern      
 } from './PtzDevice';
 
 

@@ -4,7 +4,42 @@ import ErrorResponse from '../../../models/api/Responses/ErrorResponse';
 import {Server} from '../../../server';
 import {Cam} from 'onvif';
 
-async function getCamera(deviceId: number) {
+// Type definitions
+interface OnvifStatus {
+    position: {
+        x: number;
+        y: number;
+        zoom: number;
+    }
+}
+
+interface OnvifPreset {
+    token: string;
+    name: string;
+    position: {
+        x: number;
+        y: number;
+        zoom: number;
+    }
+}
+
+interface Pattern {
+    name: string;
+    movements: Array<{
+        x: number;
+        y: number;
+        zoom: number;
+        duration: number;
+    }>;
+}
+
+interface Velocity {
+    x: number;
+    y: number;
+    zoom: number;
+}
+
+async function getCamera(deviceId: number): Promise<any> {
     const device = await Devices.findOne({where: {id: deviceId}});
     if (!device) {
         throw new Error('Device not found');
@@ -16,7 +51,7 @@ async function getCamera(deviceId: number) {
             username: device.dataValues.rtsp_username,
             password: device.dataValues.rtsp_password,
             port: device.dataValues.onvif_port
-        }, function(err) {
+        }, function(err: Error | null) {
             if (err) {
                 reject(err);
             } else {
@@ -33,13 +68,12 @@ export async function ptzContinuous(
 ): Promise<void> {
     try {
         const deviceId = parseInt(req.params.deviceId);
-        const {direction, duration, speed} = req.body; // Add speed parameter
+        const {direction, duration, speed} = req.body;
         const cam: any = await getCamera(deviceId);
 
-        // Normalize speed between 0 and 1
         const normalizedSpeed = Math.min(Math.max(speed || 0.5, 0), 1);
 
-        let velocity = {x: 0.0, y: 0.0, zoom: 0.0};
+        const velocity: Velocity = {x: 0.0, y: 0.0, zoom: 0.0};
         switch (direction) {
             case 'up': velocity.y = normalizedSpeed; break;
             case 'down': velocity.y = -normalizedSpeed; break;
@@ -111,22 +145,19 @@ export async function ptzRelative(
         const {x, y, zoom} = req.body;
         const cam: any = await getCamera(deviceId);
         
-        // Get current position
-        const status = await new Promise((resolve, reject) => {
-            cam.getStatus((err, status) => {
+        const status = await new Promise<OnvifStatus>((resolve, reject) => {
+            cam.getStatus((err: Error | null, status: OnvifStatus) => {
                 if (err) reject(err);
                 else resolve(status);
             });
         });
 
-        // Calculate new position
         const newPosition = {
             x: status.position.x + (x || 0),
             y: status.position.y + (y || 0),
             zoom: status.position.zoom + (zoom || 0)
         };
         
-        // Move to new position
         cam.absoluteMove(newPosition);
         res.status(200).send(new ErrorResponse(200, 
             `Moved relatively by X=${x}, Y=${y}, Zoom=${zoom}`));
@@ -145,15 +176,13 @@ export async function getPtzPresets(
         const deviceId = parseInt(req.params.deviceId);
         const cam: any = await getCamera(deviceId);
         
-        // Get presets from camera
-        const presets = await new Promise((resolve, reject) => {
-            cam.getPresets({}, (err, presets) => {
+        const presets = await new Promise<OnvifPreset[]>((resolve, reject) => {
+            cam.getPresets({}, (err: Error | null, presets: OnvifPreset[]) => {
                 if (err) reject(err);
                 else resolve(presets);
             });
         });
 
-        // Update presets in database
         await Devices.update(
             { ptz_presets: JSON.stringify(presets) },
             { where: { id: deviceId } }
@@ -176,9 +205,8 @@ export async function gotoPreset(
         const presetToken = req.body.presetToken;
         const cam: any = await getCamera(deviceId);
         
-        // Go to preset
         await new Promise((resolve, reject) => {
-            cam.gotoPreset({ preset: presetToken }, (err) => {
+            cam.gotoPreset({ preset: presetToken }, (err: Error | null) => {
                 if (err) reject(err);
                 else resolve(true);
             });
@@ -201,15 +229,13 @@ export async function setPreset(
         const presetName = req.body.presetName;
         const cam: any = await getCamera(deviceId);
         
-        // Set new preset
-        const preset = await new Promise((resolve, reject) => {
-            cam.setPreset({ presetName }, (err, preset) => {
+        const preset = await new Promise<OnvifPreset>((resolve, reject) => {
+            cam.setPreset({ presetName }, (err: Error | null, preset: OnvifPreset) => {
                 if (err) reject(err);
                 else resolve(preset);
             });
         });
 
-        // Update presets in database
         const device = await Devices.findOne({ where: { id: deviceId } });
         const presets = JSON.parse(device.dataValues.ptz_presets || '[]');
         presets.push(preset);
@@ -225,7 +251,6 @@ export async function setPreset(
     }
 }
 
-
 export async function recordPattern(
     req: Request,
     res: Response,
@@ -236,8 +261,7 @@ export async function recordPattern(
         const {patternName, movements} = req.body;
         const device = await Devices.findOne({where: {id: deviceId}});
         
-        // Save pattern to database
-        const patterns = JSON.parse(device.dataValues.ptz_patterns || '[]');
+        const patterns: Pattern[] = JSON.parse(device.dataValues.ptz_patterns || '[]');
         patterns.push({
             name: patternName,
             movements: movements
@@ -264,12 +288,15 @@ export async function runPattern(
         const deviceId = parseInt(req.params.deviceId);
         const {patternName} = req.body;
         const device = await Devices.findOne({where: {id: deviceId}});
-        const patterns = JSON.parse(device.dataValues.ptz_patterns || '[]');
-        const pattern = patterns.find(p => p.name === patternName);
+        const patterns: Pattern[] = JSON.parse(device.dataValues.ptz_patterns || '[]');
+        const pattern = patterns.find((p: Pattern) => p.name === patternName);
         
+        if (!pattern) {
+            throw new Error('Pattern not found');
+        }
+
         const cam: any = await getCamera(deviceId);
         
-        // Execute pattern movements sequentially
         for (const movement of pattern.movements) {
             await cam.absoluteMove(movement);
             await new Promise(resolve => setTimeout(resolve, movement.duration));
@@ -281,3 +308,4 @@ export async function runPattern(
         res.status(500).send(new ErrorResponse(500, 'Failed to run pattern'));
     }
 }
+
