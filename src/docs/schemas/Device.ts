@@ -13,6 +13,14 @@ const device = {
       type: 'integer',
       examples: [50, 100, 0],
     },
+    buffer_prerecording: {
+      type: 'integer',
+      examples: [0, 10, 30],
+    },
+    buffer_postrecording: {
+      type: 'integer',
+      examples: [0, 10, 30],
+    },
     channel: {
       type: 'integer',
       examples: [0, 1],
@@ -43,12 +51,12 @@ const device = {
     },
     frame_downscale_factor: {
       type: 'number',
-      format: 'float',
+      format: 'decimal',
       examples: [0.5, 0.8],
     },
     hls_segment_duration: {
       type: 'number',
-      format: 'float',
+      format: 'decimal',
       examples: [0.0, 0.1],
     },
     hls_segment_size: {
@@ -59,6 +67,10 @@ const device = {
       type: 'integer',
       examples: [5, 7],
     },
+    hue: {
+      type: 'integer',
+      examples: [50, 100, 0],
+    },
     id: {
       type: 'integer',
       examples: [14, 265],
@@ -66,6 +78,10 @@ const device = {
     invert: {
       type: 'boolean',
       examples: [false, true],
+    },
+    min_motion_area: {
+      type: 'integer',
+      examples: [30, 50],
     },
     max_motion_area: {
       type: 'integer',
@@ -127,9 +143,42 @@ const device = {
       type: 'string',
       examples: ['null'],
     },
+    ptz_control_protocol: {
+      type: 'string',
+      examples: ['null'],
+    },
     ptz_serial_values: {
       type: 'string',
       examples: ['null'],
+    },
+    ptz_enabled: {
+      type: 'boolean',
+      examples: [false, true],
+      description: 'Whether PTZ control is enabled for this device',
+      default: false,
+    },
+    ptz_presets: {
+      type: 'string',
+      examples: ['[]'],
+      description: 'JSON string containing PTZ presets',
+      default: '[]',
+    },
+    ptz_home_preset: {
+      type: 'string',
+      examples: ['null'],
+      description: 'Home preset token',
+    },
+    ptz_patterns: {
+      type: 'string',
+      examples: ['[]'],
+      description: 'JSON string containing pattern definitions',
+      default: '[]',
+    },
+    ptz_tours: {
+      type: 'string',
+      examples: ['[]'],
+      description: 'JSON string containing tour definitions',
+      default: '[]',
     },
     reencode_bitrate: {
       type: 'integer',
@@ -161,7 +210,11 @@ const device = {
     },
     rtsp_password: {
       type: 'string',
-      examples: ['Bluech3rryAdm!n_'],
+      examples: ['password'],
+    },
+    rtsp_rtp_prefer_tcp: {
+      type: 'integer',
+      examples: [0, 1],
     },
     saturation: {
       type: 'integer',
@@ -185,19 +238,20 @@ const device = {
     },
     substream_path: {
       type: 'string',
-      examples: [
-        '192.168.255.255|80|/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif',
-      ],
+      examples: ['192.168.255.255|80|/cam/realmonitor?channel=1&subtype=1&unicast=true&proto=Onvif'],
     },
     video_interval: {
-      type: 'string',
-      examples: ['null'],
+      type: 'integer',
+      examples: [0, 1],
     },
     video_quality: {
       type: 'integer',
       examples: [100, 50],
-    },
+    }
   },
+  required: ['id', 'device_name', 'protocol'],
+  additionalProperties: false
 };
 
-export {device};
+export { device };
+

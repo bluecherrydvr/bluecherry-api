@@ -4,15 +4,24 @@ import {deleteDevice} from './DeleteDevice';
 import {getDevice, getDevices} from './GetDevice';
 import {updateDevice} from './UpdateDevice';
 import {
-    ptzContinuous, 
-    ptzAbsolute, 
+    ptzContinuous,
+    ptzAbsolute,
     ptzStop,
     getPtzPresets,
     gotoPreset,
     setPreset,
-    ptzRelative,    
-    recordPattern,  
-    runPattern      
+    ptzRelative,
+    recordPattern,
+    runPattern,
+    getPtzStatus,
+    getPtzConfiguration,
+    setPtzConfiguration,
+    setHomePosition,
+    gotoHomePosition,
+    getPtzLimits,
+    setPtzLimits,
+    deletePreset,
+    renamePreset
 } from './PtzDevice';
 
 
@@ -38,5 +47,15 @@ api.route('/:deviceId/ptz/preset/set').post(setPreset);
 // Pattern/Tour routes
 api.route('/:deviceId/ptz/pattern/record').post(recordPattern);
 api.route('/:deviceId/ptz/pattern/run').post(runPattern);
+
+api.route('/:deviceId/ptz/status').get(getPtzStatus);
+api.route('/:deviceId/ptz/config').get(getPtzConfiguration);
+api.route('/:deviceId/ptz/config').put(setPtzConfiguration);
+api.route('/:deviceId/ptz/home').post(setHomePosition);
+api.route('/:deviceId/ptz/home/goto').post(gotoHomePosition);
+api.route('/:deviceId/ptz/limits').get(getPtzLimits);
+api.route('/:deviceId/ptz/limits').put(setPtzLimits);
+api.route('/:deviceId/ptz/preset/:presetId').delete(deletePreset);
+api.route('/:deviceId/ptz/preset/:presetId').put(renamePreset);
 
 export = api;

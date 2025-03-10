@@ -15,7 +15,10 @@ function Register(sequelize = Server.sequelize): void {
       contrast: DataTypes.SMALLINT,
       debug_level: DataTypes.TINYINT,
       device: DataTypes.STRING,
-      device_name: DataTypes.STRING,
+      device_uri: {
+      type: DataTypes.STRING,
+      allowNull: true
+      },
       disabled: DataTypes.BOOLEAN,
       driver: DataTypes.STRING,
       frame_downscale_factor: DataTypes.DECIMAL,
@@ -41,33 +44,31 @@ function Register(sequelize = Server.sequelize): void {
       onvif_port: DataTypes.MEDIUMINT,
       protocol: DataTypes.STRING,
       ptz_control_path: DataTypes.STRING,
-      ptz_control_protocol: DataTypes.STRING,
       ptz_serial_values: DataTypes.STRING,
       // PTZ-related fields
-      ptz_enabled: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
-      },
-      ptz_presets: {
-        type: DataTypes.TEXT,  // Store presets as JSON string
-        allowNull: true,
-        defaultValue: '[]'
-      },
-      ptz_home_preset: {
+      ptz_control_protocol: {
         type: DataTypes.STRING,
         allowNull: true
       },
-      ptz_patterns: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: '[]'  // Stores pattern definitions as JSON
-      },
-      ptz_tours: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        defaultValue: '[]'  // Stores tour definitions as JSON
-      },
+//      ptz_presets: {
+//        type: DataTypes.TEXT,  // Store presets as JSON string
+//       allowNull: true,
+//      defaultValue: '[]'
+//      },
+//      ptz_home_preset: {
+//        type: DataTypes.STRING,
+//        allowNull: true
+//      },
+//      ptz_patterns: {
+//        type: DataTypes.TEXT,
+//        allowNull: true,
+//        defaultValue: '[]'  // Stores pattern definitions as JSON
+//      },
+//      ptz_tours: {
+//        type: DataTypes.TEXT,
+//        allowNull: true,
+//        defaultValue: '[]'  // Stores tour definitions as JSON
+//      },
       reencode_bitrate: DataTypes.INTEGER,
       reencode_frame_height: DataTypes.SMALLINT,
       reencode_frame_width: DataTypes.SMALLINT,
